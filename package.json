@@ -1,0 +1,19 @@
+{
+  "name": "hypf",
+  "version": "0.0.1",
+  "description": "Hyperfetch (🇭) - supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "webpack",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.2",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  }
+}
