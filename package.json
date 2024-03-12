@@ -1,16 +1,62 @@
 {
   "name": "hypf",
-  "version": "0.0.1",
-  "description": "Hyperfetch (🇭) - supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.",
-  "main": "index.js",
+  "version": "0.0.4",
+  "description": "Supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.",
+  "main": "./dist/Hyperfetch.js",
+  "repository": "fzn0x/hypf",
+  "type": "module",
+  "author": {
+    "name": "Muhammad Fauzan",
+    "email": "developerfauzan@gmail.com",
+    "url": "https://fzn0x.vercel.app/"
+  },
+  "exports": {
+    "types": "./types/Hyperfetch.d.ts",
+    "default": "./dist/Hyperfetch.js"
+  },
+  "types": "./types/Hyperfetch.d.ts",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "bundle": "webpack",
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "fetch",
+    "request",
+    "http",
+    "https",
+    "fetching",
+    "get",
+    "url",
+    "curl",
+    "wget",
+    "networking",
+    "ajax",
+    "api",
+    "rest",
+    "xhr",
+    "browser",
+    "http-client",
+    "http-request",
+    "http-response",
+    "data-fetching",
+    "web-request",
+    "http-utilities",
+    "web-data",
+    "fetch-data",
+    "http-fetch",
+    "resource-fetching",
+    "web-access",
+    "http-access",
+    "http-interaction",
+    "http-communication",
+    "data-retrieval"
+  ],
+  "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.11.26",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.2",
     "webpack": "^5.90.3",
