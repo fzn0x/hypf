@@ -13,6 +13,8 @@ npm install hypf
 The idea of this tool is to provide frontend-only lightweight solution for fetching APIs with an easy wrapper:
 
 ```js
+const hypf = require("hypf");
+
 const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com"); // Pass true for DEBUG mode
 
 // Example usage of POST method with retry and timeout

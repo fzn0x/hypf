@@ -175,6 +175,4 @@ function createRequest<T, U>(baseUrl?: string, hooks?: Hooks, DEBUG = false): Ht
   };
 }
 
-window.createRequest = createRequest;
-export default createRequest;
-export { createRequest };
+export default { createRequest };
