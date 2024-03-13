@@ -2,9 +2,7 @@
     <img width="55%" src="./assets/hyperfetch.png">
 </p>
 
-# Hyperfetch (🇭)
-
-Creates supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.
+> Creates supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.
 
 ```sh
 npm install hypf
@@ -13,7 +11,7 @@ npm install hypf
 The idea of this tool is to provide frontend-only lightweight solution for fetching APIs with an easy wrapper:
 
 ```js
-const hypf = require("hypf");
+import hypf from "hypf";
 
 const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com"); // Pass true for DEBUG mode
 
@@ -35,11 +33,9 @@ if (postErr) {
 }
 ```
 
-Author:
-
-> We don't need to create a solution for both Nodejs and frontend app if it's just making the bundle size of frontend is bigger.
-
 For Node.js apps I recommend you to use [got](https://github.com/sindresorhus/got).
+
+# Why Hyperfetch?
 
 ## Simple Core
 
