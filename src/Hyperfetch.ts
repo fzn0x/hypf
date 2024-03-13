@@ -1,3 +1,10 @@
+import type { 
+  HttpRequestFunctions,
+  RequestFunction,
+  HttpMethodFunction
+} from "types/request.js";
+import type { Hooks } from "types/hooks.js";
+
 // Default maximum recommended timeout in milliseconds (adjust as needed)
 const DEFAULT_MAX_TIMEOUT = 2147483647;
 const DEFAULT_BACKOFF_FACTOR = 0.3;
@@ -157,7 +164,7 @@ function createRequest<T, U>(baseUrl?: string, hooks?: Hooks, DEBUG = false): Ht
     }
   };
 
-  const httpMethodFunction: HttpMethodFunction<T, U> = (url, options) => async (method = 'GET', additionalOptions = {}, data?: T): Promise<[Error | null | unknown, U | null]> => {
+  const httpMethodFunction: HttpMethodFunction<T, U> = (url, options) => (method = 'GET', additionalOptions = {}, data) => {
     return request(url, { method, ...options, ...additionalOptions }, data);
   };
 
@@ -172,7 +179,7 @@ function createRequest<T, U>(baseUrl?: string, hooks?: Hooks, DEBUG = false): Ht
     patch: (url, options, data) => httpMethodFunction(url, options)('PATCH', options, data),
     options: (url, options, data) => httpMethodFunction(url, options)('OPTIONS', options, data),
     getAbortController,
-  };
+  }
 }
 
 export default { createRequest };
