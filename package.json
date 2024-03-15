@@ -19,8 +19,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "bundle": "webpack",
-    "build": "tsc"
+    "build": "tsc && webpack"
   },
   "keywords": [
     "fetch",

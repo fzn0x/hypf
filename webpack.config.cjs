@@ -10,8 +10,8 @@ module.exports = {
             type: 'umd',
             umdNamedDefine: true,
         },
-        path: path.resolve(__dirname, 'static'),
-        filename: 'hyperfetch.js',
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'hyperfetch-browser.min.js',
     },
     resolve: { extensions: ['.ts'] },
     module: {
