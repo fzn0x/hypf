@@ -1,6 +1,6 @@
 {
   "name": "hypf",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.",
   "main": "./dist/Hyperfetch.js",
   "repository": "fzn0x/hypf",
@@ -11,10 +11,10 @@
     "url": "https://fzn0x.vercel.app/"
   },
   "exports": {
-    "types": "./types/Hyperfetch.d.ts",
+    "types": "./dist/Hyperfetch.d.ts",
     "default": "./dist/Hyperfetch.js"
   },
-  "types": "./types/Hyperfetch.d.ts",
+  "types": "./dist/Hyperfetch.d.ts",
   "engines": {
     "node": ">=18"
   },
