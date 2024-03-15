@@ -10,6 +10,7 @@
     "email": "developerfauzan@gmail.com",
     "url": "https://fzn0x.vercel.app/"
   },
+  "sideEffects": false,
   "exports": {
     "types": "./dist/Hyperfetch.d.ts",
     "default": "./dist/Hyperfetch.js"
