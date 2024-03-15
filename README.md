@@ -40,7 +40,7 @@ or browsers
 
 <script>
     (async () => {
-        const requestWithHooks = hypf.default.createRequest("https://jsonplaceholder.typicode.com");
+        const request = hypf.default.createRequest("https://jsonplaceholder.typicode.com");
     })();
 </script>
 ```
@@ -68,21 +68,10 @@ getAbortController,
 No need to write `try..catch` ! hypf do it like this:
 
 ```js
-const hooks = {
-    preRequest: (url, options) => {
-        console.log(`Preparing to send request to: ${url}`);
-        // You can perform actions before the request here
-    },
-    postRequest: (url, options, data, response) => {
-        console.log(`Request to ${url} completed with status: ${response?.[0] ? 'error' : 'success'}`);
-        // You can perform actions after the request here, including handling errors
-    },
-};
-
-const requestWithHooks = hypf.createRequest("https://jsonplaceholder.typicode.com", hooks, true); // Pass true for DEBUG mode
+const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com";
 
 // Example usage of POST method with retry and timeout
-const [postErr, postData] = await requestWithHooks.post(
+const [postErr, postData] = await hypfRequest.post(
     '/posts',
     { retries: 3, timeout: 5000 },
     {
@@ -97,6 +86,53 @@ if (postErr) {
 } else {
     console.log('POST Data:', postData);
 }
+```
+
+## Hooks
+
+Hooks is supported and expected to not modifying the original result by design.
+
+```js
+const hooks = {
+    preRequest: (url, options) => {
+        console.log(`Preparing to send request to: ${url}`);
+        // You can perform actions before the request here
+    },
+    postRequest: (url, options, data, response) => {
+        console.log(`Request to ${url} completed with status: ${response?.[0] ? 'error' : 'success'}`);
+        // You can perform actions after the request here, including handling errors
+    },
+};
+
+const requestWithHooks = hypf.createRequest("https://jsonplaceholder.typicode.com", hooks, true); // pass true for DEBUG mode
+
+// Example usage of POST method with retry and timeout
+const [postErr, postData] = await requestWithHooks.post(
+    '/posts',
+    { retries: 3, timeout: 5000 },
+    {
+        title: 'foo',
+        body: 'bar',
+        userId: 1,
+    }
+);
+```
+
+List of Hooks:
+
+```ts
+// Perform actions before request
+preRequest?: (url: string, options: RequestOptions) => void;
+// Perform actions after request
+postRequest?: <T, U>(url: string, options: RequestOptions, data?: T, response?: [Error | null | unknown, U]) => void;
+// Perform actions before retry
+preRetry?: (url: string, options: RequestOptions, retryCount: number, retryLeft: number) => void;
+// Perform actions after retry
+postRetry?: <T, U>(url: string, options: RequestOptions, data?: T, response?: [Error | null | unknown, U], retryCount?: number, retryLeft?: number) => void;
+// Perform actions before timeout, deprecated soon, use `preRequest` instead
+preTimeout?: (url: string, options: RequestOptions) => void;
+// Perform actions after timeout
+postTimeout?: (url: string, options: RequestOptions) => void;
 ```
 
 ## Retry Mechanism
