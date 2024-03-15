@@ -33,7 +33,19 @@ if (postErr) {
 }
 ```
 
-For Node.js apps I recommend you to use [got](https://github.com/sindresorhus/got).
+or browsers
+
+```html
+<script src="https://unpkg.com/hypf/dist/hyperfetch-browser.min.js"></script>
+
+<script>
+    (async () => {
+        const requestWithHooks = hypf.default.createRequest("https://jsonplaceholder.typicode.com");
+    })();
+</script>
+```
+
+For Deno / Node.js apps I recommend you to use [got](https://github.com/sindresorhus/got).
 
 # Why Hyperfetch?
 
