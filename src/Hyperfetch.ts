@@ -1,6 +1,7 @@
 import type {
   HttpRequestFunctions,
   RequestFunction,
+  RequestOptions,
   HttpMethodFunction,
 } from "types/request.js";
 import type { Hooks } from "types/hooks.js";
@@ -241,8 +242,12 @@ function createRequest(
   };
 
   const httpMethodFunction: HttpMethodFunction =
-    (url, options) =>
-    (method = "GET", additionalOptions = {}, data) => {
+    (url: string, options: RequestOptions = {}) =>
+    <T>(
+      method = "GET",
+      additionalOptions = {},
+      data?: unknown
+    ): Promise<[Error | unknown | null, T | unknown | null]> => {
       return request(url, { method, ...options, ...additionalOptions }, data);
     };
 

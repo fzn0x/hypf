@@ -11,14 +11,14 @@ export interface RequestOptions extends RequestInit {
     params?: Record<string, string | number>;
 }
 export type RequestFunction = (url?: string, options?: RequestOptions, data?: unknown) => Promise<[Error | null | unknown, unknown | null]>;
-export type HttpMethodFunction = (url?: string, options?: RequestOptions) => RequestFunction;
+export type HttpMethodFunction = (url: string, options: RequestOptions | undefined) => RequestFunction;
 export interface HttpRequestFunctions {
-    get: RequestFunction;
-    post: RequestFunction;
-    put: RequestFunction;
-    delete: RequestFunction;
-    patch: RequestFunction;
-    options: RequestFunction;
+    get<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
+    post<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
+    put<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
+    delete<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
+    patch<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
+    options<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
     getAbortController(): AbortController;
 }
 //# sourceMappingURL=request.d.ts.map

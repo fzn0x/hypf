@@ -153,7 +153,7 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
             return [error, null];
         }
     });
-    const httpMethodFunction = (url, options) => (method = "GET", additionalOptions = {}, data) => {
+    const httpMethodFunction = (url, options = {}) => (method = "GET", additionalOptions = {}, data) => {
         return request(url, Object.assign(Object.assign({ method }, options), additionalOptions), data);
     };
     // Expose the AbortController instance through the library interface
