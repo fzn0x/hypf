@@ -262,7 +262,7 @@ const [getErr, getData] = await hypfRequest.get("/posts", {
 
 #### Constant
 
-```
+```js
 const DEFAULT_MAX_TIMEOUT = 2147483647;
 const DEFAULT_BACKOFF_FACTOR = 0.3;
 const DEFAULT_JITTER_FACTOR = 1;
