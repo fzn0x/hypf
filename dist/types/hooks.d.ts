@@ -1,4 +1,4 @@
-import type { RequestOptions } from "types/request.js";
+import type { RequestOptions } from "./request.ts";
 export interface Hooks {
     preRequest?: (url: string, options: RequestOptions) => void;
     postRequest?: <T, U>(url: string, options: RequestOptions, data?: T, response?: [Error | null, U]) => void;

@@ -1,4 +1,4 @@
-import type { RequestOptions } from "./request.ts";
+import type { RequestOptions } from "./request.ts/index.ts";
 
 // Hooks interface
 export interface Hooks {
