@@ -1,6 +1,7 @@
 import hypf from "hypf";
 
 describe("Hyperfetch", () => {
+  // TODO: create a local mock server for typicode
   const hypfRequest = hypf.createRequest(
     "https://jsonplaceholder.typicode.com"
   );
