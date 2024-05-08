@@ -3,27 +3,31 @@ import type {
   RequestFunction,
   RequestOptions,
   HttpMethodFunction,
-} from "types/request.js";
-import type { Hooks } from "types/hooks.js";
+} from "./types/request.ts";
+import type { Hooks } from "./types/hooks.ts";
 
-// Default maximum recommended timeout in milliseconds (adjust as needed)
-const DEFAULT_MAX_TIMEOUT = 2147483647;
-const DEFAULT_BACKOFF_FACTOR = 0.3;
-const DEFAULT_JITTER_FACTOR = 1;
+import {
+  DEFAULT_BACKOFF_FACTOR,
+  DEFAULT_JITTER_FACTOR,
+  DEFAULT_MAX_TIMEOUT,
+  isAbortControllerSupported,
+  isReadableStreamSupported,
+  isWriteableStreamSupported,
+  isWebRTCSupported,
+  isWebsocketSupported,
+  isNode,
+} from "./constant";
 
-function appendParams(
-  url: string,
-  params?: Record<string, string | number>
-): string {
-  if (!params) return url;
+import { appendParams } from "./utils/append-params";
 
-  const urlWithParams = new URL(url);
-  Object.entries(params).forEach(([key, value]) =>
-    urlWithParams.searchParams.append(key, String(value))
-  );
+const defaultBackoff = (retryCount: number, factor: number) =>
+  Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
 
-  return urlWithParams.toString();
-}
+const defaultJitter = (factor: number) => Math.random() * 1000 * factor; // Randomized delay up to 1 second
+
+// Expose the AbortController instance through the library interface
+const getAbortController = () =>
+  isAbortControllerSupported ? globalThis.abortController : null;
 
 function createRequest(
   baseUrl?: string,
@@ -36,13 +40,6 @@ function createRequest(
       "This library is intended for use in the browser environment only."
     );
   }
-
-  const defaultBackoff = (retryCount: number, factor: number) =>
-    Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
-  const defaultJitter = (factor: number) => Math.random() * 1000 * factor; // Randomized delay up to 1 second
-
-  // Expose the AbortController instance
-  const abortController = new AbortController();
 
   const request: RequestFunction = async (
     url = "",
@@ -96,31 +93,69 @@ function createRequest(
         }
       }
 
-      // Use the external AbortController instance
-      const controller = signal ? signal : abortController.signal;
-
       // Execute pre-timeout hook
       if (hooks?.preTimeout) {
         hooks.preTimeout(url, options);
       }
 
-      const timeoutId = timeout
-        ? setTimeout(() => {
-            abortController.abort();
+      if (isAbortControllerSupported) {
+        // Expose the AbortController instance
+        globalThis.abortController = new AbortController();
 
-            // Execute post-timeout hook
-            if (hooks?.postTimeout) {
-              hooks.postTimeout(url, options);
-            }
-          }, timeout)
-        : undefined;
+        // Use the external AbortController instance
+        globalThis.abortSignal = signal
+          ? signal
+          : globalThis.abortController.signal;
+      }
+
+      const timeoutId =
+        timeout && isAbortControllerSupported
+          ? setTimeout(() => {
+              globalThis.abortController.abort();
+
+              // Execute post-timeout hook
+              if (hooks?.postTimeout) {
+                hooks.postTimeout(url, options);
+              }
+            }, timeout)
+          : undefined;
 
       // Append params to the URL
       const urlWithParams = params ? appendParams(fullUrl, params) : fullUrl;
 
+      // Only checks Node.js for duplex compability, as other JS runtimes do full-duplex
+      // Streams are supported, but they inherently support one-way operations each. Combine them for pseudo full duplex.
+      if (isReadableStreamSupported && !isWriteableStreamSupported && isNode) {
+        // The @ts-expect-error directive is used here because we are about to assign a value to a property
+        // that might not be officially recognized in the TypeScript types definitions for `otherOptions`.
+        // This tells TypeScript to expect a type error on the next line but to ignore it for compilation.
+        // This approach is often used when dealing with dynamic properties or when using features that TypeScript
+        // is not aware of, possibly due to using newer browser APIs or experimental features.
+        // @ts-expect-error
+        otherOptions.duplex = "half";
+      }
+      if (!isReadableStreamSupported && isWriteableStreamSupported && isNode) {
+        // @ts-expect-error
+        otherOptions.duplex = "half";
+      }
+      if (isReadableStreamSupported && isWriteableStreamSupported && isNode) {
+        // @ts-expect-error
+        otherOptions.duplex = "half";
+      }
+      // WebRTC is supported, allowing for full duplex communication.
+      if (isWebRTCSupported && isNode) {
+        // @ts-expect-error
+        otherOptions.duplex = "half";
+      }
+      // WebSockets are supported, and thus full duplex communication is possible.
+      if (isWebsocketSupported && isNode) {
+        // @ts-expect-error
+        otherOptions.duplex = "half";
+      }
+
       const responsePromise = fetch(urlWithParams, {
         method,
-        signal: controller,
+        signal: isAbortControllerSupported ? globalThis.abortSignal : null,
         headers,
         ...otherOptions,
         body: data ? JSON.stringify(data) : undefined,
@@ -252,9 +287,6 @@ function createRequest(
     (method = "GET", additionalOptions = {}, data) => {
       return request(url, { method, ...options, ...additionalOptions }, data);
     };
-
-  // Expose the AbortController instance through the library interface
-  const getAbortController = () => abortController;
 
   return {
     get: (url, options, data) =>

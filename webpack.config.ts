@@ -14,7 +14,9 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     path: path.resolve(__dirname, "dist"),
     filename: "hyperfetch-browser.min.js",
   },
-  resolve: { extensions: [".ts"] },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
   module: {
     rules: [
       // all files with a `.ts`, `.cts`, `.mts` or `.tsx` extension will be handled by `ts-loader`

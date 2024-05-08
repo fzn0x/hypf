@@ -18,26 +18,17 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-// Default maximum recommended timeout in milliseconds (adjust as needed)
-const DEFAULT_MAX_TIMEOUT = 2147483647;
-const DEFAULT_BACKOFF_FACTOR = 0.3;
-const DEFAULT_JITTER_FACTOR = 1;
-function appendParams(url, params) {
-    if (!params)
-        return url;
-    const urlWithParams = new URL(url);
-    Object.entries(params).forEach(([key, value]) => urlWithParams.searchParams.append(key, String(value)));
-    return urlWithParams.toString();
-}
+import { DEFAULT_BACKOFF_FACTOR, DEFAULT_JITTER_FACTOR, DEFAULT_MAX_TIMEOUT, isAbortControllerSupported, isReadableStreamSupported, isWriteableStreamSupported, isWebRTCSupported, isWebsocketSupported, isNode, } from "./constant";
+import { appendParams } from "./utils/append-params";
+const defaultBackoff = (retryCount, factor) => Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
+const defaultJitter = (factor) => Math.random() * 1000 * factor; // Randomized delay up to 1 second
+// Expose the AbortController instance through the library interface
+const getAbortController = () => isAbortControllerSupported ? globalThis.abortController : null;
 function createRequest(baseUrl, hooks, DEBUG = false) {
     // Check if fetch is available (browser environment)
     if (typeof fetch === "undefined") {
         throw new Error("This library is intended for use in the browser environment only.");
     }
-    const defaultBackoff = (retryCount, factor) => Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
-    const defaultJitter = (factor) => Math.random() * 1000 * factor; // Randomized delay up to 1 second
-    // Expose the AbortController instance
-    const abortController = new AbortController();
     const request = (...args_1) => __awaiter(this, [...args_1], void 0, function* (url = "", options = {}, data) {
         var _a;
         try {
@@ -62,15 +53,21 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
                     reqHeaders.set("Content-Length", String(textEncoder.encode(JSON.stringify(data)).length));
                 }
             }
-            // Use the external AbortController instance
-            const controller = signal ? signal : abortController.signal;
             // Execute pre-timeout hook
             if (hooks === null || hooks === void 0 ? void 0 : hooks.preTimeout) {
                 hooks.preTimeout(url, options);
             }
-            const timeoutId = timeout
+            if (isAbortControllerSupported) {
+                // Expose the AbortController instance
+                globalThis.abortController = new AbortController();
+                // Use the external AbortController instance
+                globalThis.abortSignal = signal
+                    ? signal
+                    : globalThis.abortController.signal;
+            }
+            const timeoutId = timeout && isAbortControllerSupported
                 ? setTimeout(() => {
-                    abortController.abort();
+                    globalThis.abortController.abort();
                     // Execute post-timeout hook
                     if (hooks === null || hooks === void 0 ? void 0 : hooks.postTimeout) {
                         hooks.postTimeout(url, options);
@@ -79,7 +76,36 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
                 : undefined;
             // Append params to the URL
             const urlWithParams = params ? appendParams(fullUrl, params) : fullUrl;
-            const responsePromise = fetch(urlWithParams, Object.assign(Object.assign({ method, signal: controller, headers }, otherOptions), { body: data ? JSON.stringify(data) : undefined }));
+            // Only checks Node.js for duplex compability, as other JS runtimes do full-duplex
+            // Streams are supported, but they inherently support one-way operations each. Combine them for pseudo full duplex.
+            if (isReadableStreamSupported && !isWriteableStreamSupported && isNode) {
+                // The @ts-expect-error directive is used here because we are about to assign a value to a property
+                // that might not be officially recognized in the TypeScript types definitions for `otherOptions`.
+                // This tells TypeScript to expect a type error on the next line but to ignore it for compilation.
+                // This approach is often used when dealing with dynamic properties or when using features that TypeScript
+                // is not aware of, possibly due to using newer browser APIs or experimental features.
+                // @ts-expect-error
+                otherOptions.duplex = "half";
+            }
+            if (!isReadableStreamSupported && isWriteableStreamSupported && isNode) {
+                // @ts-expect-error
+                otherOptions.duplex = "half";
+            }
+            if (isReadableStreamSupported && isWriteableStreamSupported && isNode) {
+                // @ts-expect-error
+                otherOptions.duplex = "half";
+            }
+            // WebRTC is supported, allowing for full duplex communication.
+            if (isWebRTCSupported && isNode) {
+                // @ts-expect-error
+                otherOptions.duplex = "half";
+            }
+            // WebSockets are supported, and thus full duplex communication is possible.
+            if (isWebsocketSupported && isNode) {
+                // @ts-expect-error
+                otherOptions.duplex = "half";
+            }
+            const responsePromise = fetch(urlWithParams, Object.assign(Object.assign({ method, signal: isAbortControllerSupported ? globalThis.abortSignal : null, headers }, otherOptions), { body: data ? JSON.stringify(data) : undefined }));
             clearTimeout(timeoutId);
             const response = yield responsePromise;
             if (!response.ok) {
@@ -161,8 +187,6 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
     const httpMethodFunction = (url, options = {}) => (method = "GET", additionalOptions = {}, data) => {
         return request(url, Object.assign(Object.assign({ method }, options), additionalOptions), data);
     };
-    // Expose the AbortController instance through the library interface
-    const getAbortController = () => abortController;
     return {
         get: (url, options, data) => httpMethodFunction(url, options)("GET", options, data),
         post: (url, options, data) => httpMethodFunction(url, options)("POST", options, data),
