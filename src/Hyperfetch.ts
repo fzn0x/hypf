@@ -123,14 +123,7 @@ function createRequest(
       // Append params to the URL
       const urlWithParams = params ? appendParams(fullUrl, params) : fullUrl;
 
-      // Only checks Node.js for duplex compability, as other JS runtimes do full-duplex
-      // Streams are supported, but they inherently support one-way operations each. Combine them for pseudo full duplex.
       if (isReadableStreamSupported && !isWriteableStreamSupported && isNode) {
-        // The @ts-expect-error directive is used here because we are about to assign a value to a property
-        // that might not be officially recognized in the TypeScript types definitions for `otherOptions`.
-        // This tells TypeScript to expect a type error on the next line but to ignore it for compilation.
-        // This approach is often used when dealing with dynamic properties or when using features that TypeScript
-        // is not aware of, possibly due to using newer browser APIs or experimental features.
         // @ts-expect-error
         otherOptions.duplex = "half";
       }
