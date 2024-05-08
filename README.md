@@ -11,7 +11,7 @@ npm install hypf
 bun install hypf
 ```
 
-The idea of this tool is to provide frontend-only lightweight solution for fetching APIs with an easy wrapper:
+The idea of this tool is to provide lightweight `fetch` wrapper for Node.js, Bun:
 
 ```js
 import hypf from "hypf";
@@ -36,7 +36,38 @@ if (postErr) {
 }
 ```
 
-or browsers
+Cloudflare Workers:
+
+```ts
+export default {
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext
+  ): Promise<Response> {
+    const hypfInstance = await hypf.createRequest(
+      "https://jsonplaceholder.typicode.com"
+    );
+
+    const [getErr, getData] = await hypfInstance.get<
+      Array<{
+        userId: number;
+        id: number;
+        title: string;
+        body: string;
+      }>
+    >("/posts");
+
+    if (getErr) {
+      console.error("GET Error:", getErr);
+    }
+
+    return Response.json(getData);
+  },
+};
+```
+
+and Browsers:
 
 ```html
 <script src="https://unpkg.com/hypf/dist/hyperfetch-browser.min.js"></script>
