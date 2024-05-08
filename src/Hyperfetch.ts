@@ -48,7 +48,7 @@ function createRequest(
     url = "",
     options = {},
     data
-  ): Promise<[Error | null | unknown, unknown | null]> => {
+  ): Promise<[Error | null, null]> => {
     try {
       // Execute pre-request hook
       if (hooks?.preRequest) {
@@ -149,7 +149,9 @@ function createRequest(
     } catch (error) {
       // Execute post-request hook for errors
       if (hooks?.postRequest) {
-        hooks.postRequest(url, options, data, [error, null]);
+        if (error instanceof Error) {
+          hooks.postRequest(url, options, data, [error, null]);
+        }
       }
 
       if (error instanceof Error) {
@@ -237,17 +239,17 @@ function createRequest(
         }
       }
 
-      return [error, null];
+      if (error instanceof Error) {
+        return [error, null];
+      }
+
+      return [null, null];
     }
   };
 
   const httpMethodFunction: HttpMethodFunction =
     (url: string, options: RequestOptions = {}) =>
-    <T>(
-      method = "GET",
-      additionalOptions = {},
-      data?: unknown
-    ): Promise<[Error | unknown | null, T | unknown | null]> => {
+    (method = "GET", additionalOptions = {}, data) => {
       return request(url, { method, ...options, ...additionalOptions }, data);
     };
 

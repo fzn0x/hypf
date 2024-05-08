@@ -2,7 +2,7 @@
     <img width="55%" src="./assets/hyperfetch.png">
 </p>
 
-> Creates supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.
+Creates supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.
 
 ```sh
 npm install hypf
@@ -17,19 +17,19 @@ const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com"); 
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await hypfRequest.post(
-    '/posts',
-    { retries: 3, timeout: 5000 },
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
+  "/posts",
+  { retries: 3, timeout: 5000 },
+  {
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }
 );
 
 if (postErr) {
-    console.error('POST Error:', postErr);
+  console.error("POST Error:", postErr);
 } else {
-    console.log('POST Data:', postData);
+  console.log("POST Data:", postData);
 }
 ```
 
@@ -39,9 +39,11 @@ or browsers
 <script src="https://unpkg.com/hypf/dist/hyperfetch-browser.min.js"></script>
 
 <script>
-    (async () => {
-        const request = hypf.default.createRequest("https://jsonplaceholder.typicode.com");
-    })();
+  (async () => {
+    const request = hypf.default.createRequest(
+      "https://jsonplaceholder.typicode.com"
+    );
+  })();
 </script>
 ```
 
@@ -94,27 +96,35 @@ Hooks is supported and expected to not modifying the original result by design.
 
 ```js
 const hooks = {
-    preRequest: (url, options) => {
-        console.log(`Preparing to send request to: ${url}`);
-        // You can perform actions before the request here
-    },
-    postRequest: (url, options, data, response) => {
-        console.log(`Request to ${url} completed with status: ${response?.[0] ? 'error' : 'success'}`);
-        // You can perform actions after the request here, including handling errors
-    },
+  preRequest: (url, options) => {
+    console.log(`Preparing to send request to: ${url}`);
+    // You can perform actions before the request here
+  },
+  postRequest: (url, options, data, response) => {
+    console.log(
+      `Request to ${url} completed with status: ${
+        response?.[0] ? "error" : "success"
+      }`
+    );
+    // You can perform actions after the request here, including handling errors
+  },
 };
 
-const requestWithHooks = hypf.createRequest("https://jsonplaceholder.typicode.com", hooks, true); // pass true for DEBUG mode
+const requestWithHooks = hypf.createRequest(
+  "https://jsonplaceholder.typicode.com",
+  hooks,
+  true
+); // pass true for DEBUG mode
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await requestWithHooks.post(
-    '/posts',
-    { retries: 3, timeout: 5000 },
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
+  "/posts",
+  { retries: 3, timeout: 5000 },
+  {
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }
 );
 ```
 
@@ -141,13 +151,13 @@ You can retry your request once it's failed!
 
 ```js
 const [postErr, postData] = await requestWithHooks.post(
-    '/posts',
-    { retries: 3, timeout: 5000 },
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
+  "/posts",
+  { retries: 3, timeout: 5000 },
+  {
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }
 );
 ```
 
@@ -155,13 +165,13 @@ Jitter and backoff also supported. 😎
 
 ```js
 const [postErr, postData] = await requestWithHooks.post(
-    '/posts',
-    { retries: 3, timeout: 5000, jitter: true }, // false `jitter` to use backoff
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
+  "/posts",
+  { retries: 3, timeout: 5000, jitter: true }, // false `jitter` to use backoff
+  {
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }
 );
 ```
 
@@ -169,25 +179,25 @@ You can modify backoff and jitter factor as well.
 
 ```js
 const [postErr, postData] = await requestWithHooks.post(
-    '/posts',
-    { retries: 3, timeout: 5000, jitter: true, jitterFactor: 10000 }, // false `jitter` to use backoff
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
+  "/posts",
+  { retries: 3, timeout: 5000, jitter: true, jitterFactor: 10000 }, // false `jitter` to use backoff
+  {
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }
 );
 
 // or backoff
 
 const [postErr, postData] = await requestWithHooks.post(
-    '/posts',
-    { retries: 3, timeout: 5000, jitter: false, backoffFactor: 10000 }, // false `jitter` to use backoff
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
+  "/posts",
+  { retries: 3, timeout: 5000, jitter: false, backoffFactor: 10000 }, // false `jitter` to use backoff
+  {
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }
 );
 ```
 
@@ -195,19 +205,31 @@ Retry on timeout also supported.
 
 ```js
 const [postErr, postData] = await requestWithHooks.post(
-    '/posts',
-    { retries: 3, timeout: 5000, retryOnTimeout: true },
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
+  "/posts",
+  { retries: 3, timeout: 5000, retryOnTimeout: true },
+  {
+    title: "foo",
+    body: "bar",
+    userId: 1,
+  }
 );
 ```
 
-## Beautifully Typed
+## Infer Response Types
 
-No any. No ts-ignore. ⚔️ It is beautiful. 
+```ts
+const [getErr, getData] = await hypfRequest.get<
+  Array<{
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
+  }>
+>("/posts", {
+  retries: 3,
+  timeout: 5000,
+});
+```
 
 ### Applications Knowledges
 
@@ -229,17 +251,16 @@ const controller = requestWithHooks.getAbortController();
 
 controller.abort();
 
-
 // Example usage of DELETE method with retry and timeout
-const [deleteErr, deleteData] = await requestWithHooks.delete(
-    '/posts/1',
-    { retries: 3, timeout: 5000 },
-);
+const [deleteErr, deleteData] = await requestWithHooks.delete("/posts/1", {
+  retries: 3,
+  timeout: 5000,
+});
 
 if (deleteErr) {
-    console.error('DELETE Error:', deleteErr);
+  console.error("DELETE Error:", deleteErr);
 } else {
-    console.log('DELETE Data:', deleteData);
+  console.log("DELETE Data:", deleteData);
 }
 ```
 

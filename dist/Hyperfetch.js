@@ -98,7 +98,9 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
         catch (error) {
             // Execute post-request hook for errors
             if (hooks === null || hooks === void 0 ? void 0 : hooks.postRequest) {
-                hooks.postRequest(url, options, data, [error, null]);
+                if (error instanceof Error) {
+                    hooks.postRequest(url, options, data, [error, null]);
+                }
             }
             if (error instanceof Error) {
                 if (error.name === "AbortError") {
@@ -150,7 +152,10 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
                     return [retryErr, retryData];
                 }
             }
-            return [error, null];
+            if (error instanceof Error) {
+                return [error, null];
+            }
+            return [null, null];
         }
     });
     const httpMethodFunction = (url, options = {}) => (method = "GET", additionalOptions = {}, data) => {
