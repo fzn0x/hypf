@@ -1,4 +1,10 @@
-export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS';
+export type RequestMethod =
+  | "GET"
+  | "POST"
+  | "PUT"
+  | "DELETE"
+  | "PATCH"
+  | "OPTIONS";
 
 export interface RequestOptions extends RequestInit {
   method?: RequestMethod | string;
@@ -12,16 +18,23 @@ export interface RequestOptions extends RequestInit {
   params?: Record<string, string | number>; // URLSearchParams option
 }
 
-export type RequestFunction<T, U> = (url?: string, options?: RequestOptions, data?: T) => Promise<[Error | null | unknown, U | null]>;
+export type RequestFunction = (
+  url?: string,
+  options?: RequestOptions,
+  data?: unknown
+) => Promise<[Error | null | unknown, unknown | null]>;
 
-export type HttpMethodFunction<T, U> = (url?: string, options?: RequestOptions) => RequestFunction<T, U>;
+export type HttpMethodFunction = (
+  url?: string,
+  options?: RequestOptions
+) => RequestFunction;
 
-export interface HttpRequestFunctions<T, U> {
-  get: RequestFunction<T, U>;
-  post: RequestFunction<T, U>;
-  put: RequestFunction<T, U>;
-  delete: RequestFunction<T, U>;
-  patch: RequestFunction<T, U>;
-  options: RequestFunction<T, U>;
+export interface HttpRequestFunctions {
+  get: RequestFunction;
+  post: RequestFunction;
+  put: RequestFunction;
+  delete: RequestFunction;
+  patch: RequestFunction;
+  options: RequestFunction;
   getAbortController(): AbortController;
 }
