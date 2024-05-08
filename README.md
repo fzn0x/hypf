@@ -131,18 +131,31 @@ const [postErr, postData] = await requestWithHooks.post(
 List of Hooks:
 
 ```ts
-// Perform actions before request
-preRequest?: (url: string, options: RequestOptions) => void;
-// Perform actions after request
-postRequest?: <T, U>(url: string, options: RequestOptions, data?: T, response?: [Error | null | unknown, U]) => void;
-// Perform actions before retry
-preRetry?: (url: string, options: RequestOptions, retryCount: number, retryLeft: number) => void;
-// Perform actions after retry
-postRetry?: <T, U>(url: string, options: RequestOptions, data?: T, response?: [Error | null | unknown, U], retryCount?: number, retryLeft?: number) => void;
-// Perform actions before timeout, deprecated soon, use `preRequest` instead
-preTimeout?: (url: string, options: RequestOptions) => void;
-// Perform actions after timeout
-postTimeout?: (url: string, options: RequestOptions) => void;
+export interface Hooks {
+  preRequest?: (url: string, options: RequestOptions) => void;
+  postRequest?: <T, U>(
+    url: string,
+    options: RequestOptions,
+    data?: T,
+    response?: [Error | null, U]
+  ) => void;
+  preRetry?: (
+    url: string,
+    options: RequestOptions,
+    retryCount: number,
+    retryLeft: number
+  ) => void;
+  postRetry?: <T, U>(
+    url: string,
+    options: RequestOptions,
+    data?: T,
+    response?: [Error | null, U],
+    retryCount?: number,
+    retryLeft?: number
+  ) => void;
+  preTimeout?: (url: string, options: RequestOptions) => void;
+  postTimeout?: (url: string, options: RequestOptions) => void;
+}
 ```
 
 ## Retry Mechanism
