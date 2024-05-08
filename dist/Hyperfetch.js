@@ -18,8 +18,8 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-import { DEFAULT_BACKOFF_FACTOR, DEFAULT_JITTER_FACTOR, DEFAULT_MAX_TIMEOUT, isAbortControllerSupported, isReadableStreamSupported, isWriteableStreamSupported, isWebRTCSupported, isWebsocketSupported, isNode, } from "./constant";
-import { appendParams } from "./utils/append-params";
+import { DEFAULT_BACKOFF_FACTOR, DEFAULT_JITTER_FACTOR, DEFAULT_MAX_TIMEOUT, isAbortControllerSupported, isReadableStreamSupported, isWriteableStreamSupported, isWebRTCSupported, isWebsocketSupported, isNode, } from "./constant.js";
+import { appendParams } from "./utils/append-params.js";
 const defaultBackoff = (retryCount, factor) => Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
 const defaultJitter = (factor) => Math.random() * 1000 * factor; // Randomized delay up to 1 second
 // Expose the AbortController instance through the library interface

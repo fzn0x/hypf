@@ -15,6 +15,9 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     filename: "hyperfetch-browser.min.js",
   },
   resolve: {
+    extensionAlias: {
+      ".js": [".js", ".ts"],
+    },
     extensions: [".ts", ".js"],
   },
   module: {
