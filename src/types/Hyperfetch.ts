@@ -1,5 +1,5 @@
-import type { HttpRequestFunctions } from "types/request.js";
-import type { Hooks } from "types/hooks.js";
+import type { HttpRequestFunctions } from "./request.ts";
+import type { Hooks } from "./hooks.ts";
 
 declare function createRequest(
   baseUrl?: string,
