@@ -60,5 +60,5 @@ export interface HttpRequestFunctions {
     options?: RequestOptions,
     data?: unknown
   ): Promise<[Error | null, T | null]>;
-  getAbortController(): AbortController;
+  getAbortController(): AbortController | null;
 }

@@ -5,7 +5,10 @@
 Creates supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.
 
 ```sh
+# Node.js
 npm install hypf
+# Bun
+bun install hypf
 ```
 
 The idea of this tool is to provide frontend-only lightweight solution for fetching APIs with an easy wrapper:
@@ -46,8 +49,6 @@ or browsers
   })();
 </script>
 ```
-
-For Deno / Node.js apps I recommend you to use [got](https://github.com/sindresorhus/got).
 
 # Why Hyperfetch?
 
