@@ -12,6 +12,7 @@ describe("Hyperfetch", () => {
     // TODO: create a local mock server for typicode
     const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com");
     it("GET", () => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
         const [getErr, getData] = yield hypfRequest.get("/posts", {
             retries: 3,
             timeout: 5000,
@@ -20,7 +21,7 @@ describe("Hyperfetch", () => {
             console.error("GET Error:", getErr);
         }
         else {
-            console.log("GET Data:", getData);
+            console.log("GET Data:", (_a = getData === null || getData === void 0 ? void 0 : getData[0]) === null || _a === void 0 ? void 0 : _a.id);
         }
     }));
     it("POST", () => __awaiter(void 0, void 0, void 0, function* () {

@@ -22,7 +22,7 @@ export type RequestFunction = (
   url?: string,
   options?: RequestOptions,
   data?: unknown
-) => Promise<[Error | null | unknown, unknown | null]>;
+) => Promise<[Error | null, null]>;
 
 export type HttpMethodFunction = (
   url: string,
@@ -30,35 +30,35 @@ export type HttpMethodFunction = (
 ) => RequestFunction;
 
 export interface HttpRequestFunctions {
-  get<T>(
+  get<T = any>(
     url: string,
     options?: RequestOptions,
     data?: unknown
-  ): Promise<[Error | unknown | null, T | unknown | null]>;
-  post<T>(
+  ): Promise<[Error | null, T | null]>;
+  post<T = any>(
     url: string,
     options?: RequestOptions,
     data?: unknown
-  ): Promise<[Error | unknown | null, T | unknown | null]>;
-  put<T>(
+  ): Promise<[Error | null, T | null]>;
+  put<T = any>(
     url: string,
     options?: RequestOptions,
     data?: unknown
-  ): Promise<[Error | unknown | null, T | unknown | null]>;
-  delete<T>(
+  ): Promise<[Error | null, T | null]>;
+  delete<T = any>(
     url: string,
     options?: RequestOptions,
     data?: unknown
-  ): Promise<[Error | unknown | null, T | unknown | null]>;
-  patch<T>(
+  ): Promise<[Error | null, T | null]>;
+  patch<T = any>(
     url: string,
     options?: RequestOptions,
     data?: unknown
-  ): Promise<[Error | unknown | null, T | unknown | null]>;
-  options<T>(
+  ): Promise<[Error | null, T | null]>;
+  options<T = any>(
     url: string,
     options?: RequestOptions,
     data?: unknown
-  ): Promise<[Error | unknown | null, T | unknown | null]>;
+  ): Promise<[Error | null, T | null]>;
   getAbortController(): AbortController;
 }

@@ -7,7 +7,14 @@ describe("Hyperfetch", () => {
   );
 
   it("GET", async () => {
-    const [getErr, getData] = await hypfRequest.get("/posts", {
+    const [getErr, getData] = await hypfRequest.get<
+      Array<{
+        userId: number;
+        id: number;
+        title: string;
+        body: string;
+      }>
+    >("/posts", {
       retries: 3,
       timeout: 5000,
     });
@@ -15,7 +22,7 @@ describe("Hyperfetch", () => {
     if (getErr) {
       console.error("GET Error:", getErr);
     } else {
-      console.log("GET Data:", getData);
+      console.log("GET Data:", getData?.[0]?.id);
     }
   });
 

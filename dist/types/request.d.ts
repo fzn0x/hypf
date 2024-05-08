@@ -10,15 +10,15 @@ export interface RequestOptions extends RequestInit {
     retryOnTimeout?: boolean;
     params?: Record<string, string | number>;
 }
-export type RequestFunction = (url?: string, options?: RequestOptions, data?: unknown) => Promise<[Error | null | unknown, unknown | null]>;
+export type RequestFunction = (url?: string, options?: RequestOptions, data?: unknown) => Promise<[Error | null, null]>;
 export type HttpMethodFunction = (url: string, options: RequestOptions | undefined) => RequestFunction;
 export interface HttpRequestFunctions {
-    get<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
-    post<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
-    put<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
-    delete<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
-    patch<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
-    options<T>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | unknown | null, T | unknown | null]>;
+    get<T = unknown>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | null, T | null]>;
+    post<T = unknown>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | null, T | null]>;
+    put<T = unknown>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | null, T | null]>;
+    delete<T = unknown>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | null, T | null]>;
+    patch<T = unknown>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | null, T | null]>;
+    options<T = unknown>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | null, T | null]>;
     getAbortController(): AbortController;
 }
 //# sourceMappingURL=request.d.ts.map
