@@ -28,6 +28,7 @@
     "noEmitOnError": true,
     "useDefineForClassFields": true,
     "forceConsistentCasingInFileNames": false,
+
     "declarationMap": true,
     "types": ["vitest/globals"],
     "paths": {

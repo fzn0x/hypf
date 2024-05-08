@@ -16,9 +16,9 @@ import {
   isWebRTCSupported,
   isWebsocketSupported,
   isNode,
-} from "./constant";
+} from "./constant.js";
 
-import { appendParams } from "./utils/append-params";
+import { appendParams } from "./utils/append-params.js";
 
 const defaultBackoff = (retryCount: number, factor: number) =>
   Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
