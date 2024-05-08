@@ -2,7 +2,7 @@
     <img width="55%" src="./assets/hyperfetch.png">
 </p>
 
-Creates supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.
+Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.
 
 ```sh
 # Node.js
