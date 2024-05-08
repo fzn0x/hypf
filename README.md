@@ -229,6 +229,20 @@ const [getErr, getData] = await hypfRequest.get<
   retries: 3,
   timeout: 5000,
 });
+
+getData?.[0]?.id; // number | undefined
+```
+
+### URLSearchParams
+
+```ts
+const [getErr, getData] = await hypfRequest.get("/posts", {
+  retries: 3,
+  timeout: 5000,
+  params: {
+    id: 1,
+  },
+}); // /posts?id=1
 ```
 
 ### Applications Knowledges
