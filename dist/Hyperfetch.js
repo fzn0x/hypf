@@ -101,9 +101,6 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
             const responsePromise = fetch(urlWithParams, Object.assign(Object.assign({ method, signal: isAbortControllerSupported ? globalThis.abortSignal : null, headers: reqHeaders }, otherOptions), { body: data ? JSON.stringify(data) : undefined }));
             clearTimeout(timeoutId);
             const response = yield responsePromise;
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.status}`);
-            }
             const contentType = response.headers.get("content-type");
             const responseData = contentType && contentType.includes("application/json")
                 ? yield response.json()

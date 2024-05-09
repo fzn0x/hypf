@@ -159,10 +159,6 @@ function createRequest(
 
       const response = await responsePromise;
 
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
-
       const contentType = response.headers.get("content-type");
       const responseData =
         contentType && contentType.includes("application/json")
