@@ -46,6 +46,21 @@ function createRequest(
     options = {},
     data
   ): Promise<[Error | null, null]> => {
+    const {
+      method = "GET",
+      retries = 0,
+      backoff = defaultBackoff,
+      jitter = false,
+      jitterFactor = DEFAULT_JITTER_FACTOR,
+      backoffFactor = DEFAULT_BACKOFF_FACTOR,
+      timeout = DEFAULT_MAX_TIMEOUT,
+      retryOnTimeout = false,
+      params,
+      headers = {},
+      signal,
+      ...otherOptions
+    } = options;
+
     try {
       // Execute pre-request hook
       if (hooks?.preRequest) {
@@ -53,27 +68,8 @@ function createRequest(
       }
 
       const fullUrl = `${baseUrl}${url}`;
-      const {
-        method = "GET",
-        retries = 0,
-        backoff = defaultBackoff,
-        jitter = false,
-        jitterFactor = DEFAULT_JITTER_FACTOR,
-        backoffFactor = DEFAULT_BACKOFF_FACTOR,
-        timeout = DEFAULT_MAX_TIMEOUT,
-        retryOnTimeout = false,
-        params,
-        headers = {},
-        signal,
-        ...otherOptions
-      } = options;
 
-      const reqHeaders = new Headers(options.headers);
-
-      // Set default Content-Type to application/json if not provided
-      if (!reqHeaders.get("Content-Type") && data && typeof data === "object") {
-        reqHeaders.set("Content-Type", "application/json");
-      }
+      const reqHeaders = new Headers(headers);
 
       // Automatically detect and add Content-Length based on payload length
       const textEncoder = new TextEncoder();
@@ -91,6 +87,11 @@ function createRequest(
             String(textEncoder.encode(JSON.stringify(data)).length)
           );
         }
+      }
+
+      // Set default Content-Type to application/json if not provided
+      if (!reqHeaders.get("Content-Type") && data && typeof data === "object") {
+        reqHeaders.set("Content-Type", "application/json");
       }
 
       // Execute pre-timeout hook
@@ -149,7 +150,7 @@ function createRequest(
       const responsePromise = fetch(urlWithParams, {
         method,
         signal: isAbortControllerSupported ? globalThis.abortSignal : null,
-        headers,
+        headers: reqHeaders,
         ...otherOptions,
         body: data ? JSON.stringify(data) : undefined,
       });
@@ -186,33 +187,31 @@ function createRequest(
         if (error.name === "AbortError") {
           console.error("Request aborted:", error);
         } else if (
-          options.retryOnTimeout &&
+          retryOnTimeout &&
           error.name === "TimeoutError" &&
-          options.retries &&
-          options.retries > 0
+          retries &&
+          retries > 0
         ) {
           const delay =
-            options.jitter && options.jitterFactor
-              ? defaultJitter(options.jitterFactor)
+            jitter && jitterFactor
+              ? defaultJitter(jitterFactor)
               : defaultBackoff(
-                  options.retries,
-                  options.backoffFactor
-                    ? options.backoffFactor
-                    : DEFAULT_BACKOFF_FACTOR
+                  retries,
+                  backoffFactor ? backoffFactor : DEFAULT_BACKOFF_FACTOR
                 );
           if (DEBUG) {
             console.warn(
-              `Request timed out. Retrying in ${delay}ms... (Remaining retries: ${options.retries})`
+              `Request timed out. Retrying in ${delay}ms... (Remaining retries: ${retries})`
             );
           }
           // Execute pre-retry hook
           if (hooks?.preRetry) {
-            hooks.preRetry(url, options, options.retries, options.retries);
+            hooks.preRetry(url, options, retries, retries);
           }
           await new Promise((resolve) => setTimeout(resolve, delay));
           const [retryErr, retryData] = await request(
             url,
-            { ...options, retries: options.retries - 1 },
+            { ...options, retries: retries - 1 },
             data
           );
           // Execute post-retry hook
@@ -222,8 +221,8 @@ function createRequest(
               options,
               data,
               [retryErr, retryData],
-              options.retries,
-              options.retries - 1
+              retries,
+              retries - 1
             );
           }
           return [retryErr, retryData];

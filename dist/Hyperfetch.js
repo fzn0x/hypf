@@ -31,18 +31,14 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
     }
     const request = (...args_1) => __awaiter(this, [...args_1], void 0, function* (url = "", options = {}, data) {
         var _a;
+        const { method = "GET", retries = 0, backoff = defaultBackoff, jitter = false, jitterFactor = DEFAULT_JITTER_FACTOR, backoffFactor = DEFAULT_BACKOFF_FACTOR, timeout = DEFAULT_MAX_TIMEOUT, retryOnTimeout = false, params, headers = {}, signal } = options, otherOptions = __rest(options, ["method", "retries", "backoff", "jitter", "jitterFactor", "backoffFactor", "timeout", "retryOnTimeout", "params", "headers", "signal"]);
         try {
             // Execute pre-request hook
             if (hooks === null || hooks === void 0 ? void 0 : hooks.preRequest) {
                 hooks.preRequest(url, options);
             }
             const fullUrl = `${baseUrl}${url}`;
-            const { method = "GET", retries = 0, backoff = defaultBackoff, jitter = false, jitterFactor = DEFAULT_JITTER_FACTOR, backoffFactor = DEFAULT_BACKOFF_FACTOR, timeout = DEFAULT_MAX_TIMEOUT, retryOnTimeout = false, params, headers = {}, signal } = options, otherOptions = __rest(options, ["method", "retries", "backoff", "jitter", "jitterFactor", "backoffFactor", "timeout", "retryOnTimeout", "params", "headers", "signal"]);
-            const reqHeaders = new Headers(options.headers);
-            // Set default Content-Type to application/json if not provided
-            if (!reqHeaders.get("Content-Type") && data && typeof data === "object") {
-                reqHeaders.set("Content-Type", "application/json");
-            }
+            const reqHeaders = new Headers(headers);
             // Automatically detect and add Content-Length based on payload length
             const textEncoder = new TextEncoder();
             if (!reqHeaders.get("Content-Length") && data) {
@@ -52,6 +48,10 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
                 else if ((_a = reqHeaders.get("Content-Length")) === null || _a === void 0 ? void 0 : _a.includes("application/json")) {
                     reqHeaders.set("Content-Length", String(textEncoder.encode(JSON.stringify(data)).length));
                 }
+            }
+            // Set default Content-Type to application/json if not provided
+            if (!reqHeaders.get("Content-Type") && data && typeof data === "object") {
+                reqHeaders.set("Content-Type", "application/json");
             }
             // Execute pre-timeout hook
             if (hooks === null || hooks === void 0 ? void 0 : hooks.preTimeout) {
@@ -76,14 +76,7 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
                 : undefined;
             // Append params to the URL
             const urlWithParams = params ? appendParams(fullUrl, params) : fullUrl;
-            // Only checks Node.js for duplex compability, as other JS runtimes do full-duplex
-            // Streams are supported, but they inherently support one-way operations each. Combine them for pseudo full duplex.
             if (isReadableStreamSupported && !isWriteableStreamSupported && isNode) {
-                // The @ts-expect-error directive is used here because we are about to assign a value to a property
-                // that might not be officially recognized in the TypeScript types definitions for `otherOptions`.
-                // This tells TypeScript to expect a type error on the next line but to ignore it for compilation.
-                // This approach is often used when dealing with dynamic properties or when using features that TypeScript
-                // is not aware of, possibly due to using newer browser APIs or experimental features.
                 // @ts-expect-error
                 otherOptions.duplex = "half";
             }
@@ -105,7 +98,7 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
                 // @ts-expect-error
                 otherOptions.duplex = "half";
             }
-            const responsePromise = fetch(urlWithParams, Object.assign(Object.assign({ method, signal: isAbortControllerSupported ? globalThis.abortSignal : null, headers }, otherOptions), { body: data ? JSON.stringify(data) : undefined }));
+            const responsePromise = fetch(urlWithParams, Object.assign(Object.assign({ method, signal: isAbortControllerSupported ? globalThis.abortSignal : null, headers: reqHeaders }, otherOptions), { body: data ? JSON.stringify(data) : undefined }));
             clearTimeout(timeoutId);
             const response = yield responsePromise;
             if (!response.ok) {
@@ -132,27 +125,25 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
                 if (error.name === "AbortError") {
                     console.error("Request aborted:", error);
                 }
-                else if (options.retryOnTimeout &&
+                else if (retryOnTimeout &&
                     error.name === "TimeoutError" &&
-                    options.retries &&
-                    options.retries > 0) {
-                    const delay = options.jitter && options.jitterFactor
-                        ? defaultJitter(options.jitterFactor)
-                        : defaultBackoff(options.retries, options.backoffFactor
-                            ? options.backoffFactor
-                            : DEFAULT_BACKOFF_FACTOR);
+                    retries &&
+                    retries > 0) {
+                    const delay = jitter && jitterFactor
+                        ? defaultJitter(jitterFactor)
+                        : defaultBackoff(retries, backoffFactor ? backoffFactor : DEFAULT_BACKOFF_FACTOR);
                     if (DEBUG) {
-                        console.warn(`Request timed out. Retrying in ${delay}ms... (Remaining retries: ${options.retries})`);
+                        console.warn(`Request timed out. Retrying in ${delay}ms... (Remaining retries: ${retries})`);
                     }
                     // Execute pre-retry hook
                     if (hooks === null || hooks === void 0 ? void 0 : hooks.preRetry) {
-                        hooks.preRetry(url, options, options.retries, options.retries);
+                        hooks.preRetry(url, options, retries, retries);
                     }
                     yield new Promise((resolve) => setTimeout(resolve, delay));
-                    const [retryErr, retryData] = yield request(url, Object.assign(Object.assign({}, options), { retries: options.retries - 1 }), data);
+                    const [retryErr, retryData] = yield request(url, Object.assign(Object.assign({}, options), { retries: retries - 1 }), data);
                     // Execute post-retry hook
                     if (hooks === null || hooks === void 0 ? void 0 : hooks.postRetry) {
-                        hooks.postRetry(url, options, data, [retryErr, retryData], options.retries, options.retries - 1);
+                        hooks.postRetry(url, options, data, [retryErr, retryData], retries, retries - 1);
                     }
                     return [retryErr, retryData];
                 }
