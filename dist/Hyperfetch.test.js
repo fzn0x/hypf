@@ -11,6 +11,7 @@ import hypf from "hypf";
 describe("Hyperfetch", () => {
     // TODO: create a local mock server for typicode
     const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com");
+    const hypfRequest2 = hypf.createRequest("http://localhost:3001");
     it("GET", () => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         const [getErr, getData] = yield hypfRequest.get("/posts", {
@@ -29,6 +30,18 @@ describe("Hyperfetch", () => {
             title: "foo",
             body: "bar",
             userId: 1,
+        });
+        if (postErr) {
+            console.error("POST Error:", postErr);
+        }
+        else {
+            console.log("POST Data:", postData);
+        }
+    }));
+    it("POST:login", () => __awaiter(void 0, void 0, void 0, function* () {
+        const [postErr, postData] = yield hypfRequest2.post("/api/auth/sign-in", { retries: 3, timeout: 5000 }, {
+            email: "admin@gmail.com",
+            pasword: "bar1232131",
         });
         if (postErr) {
             console.error("POST Error:", postErr);
