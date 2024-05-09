@@ -19,7 +19,7 @@ import {
 } from "./constant.js";
 
 import { appendParams } from "./utils/append-params.js";
-import { createHTTPError } from "./utils/create-http-error";
+import { createHTTPError } from "./utils/create-http-error.js";
 
 const defaultBackoff = (retryCount: number, factor: number) =>
   Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
