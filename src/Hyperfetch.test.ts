@@ -6,6 +6,8 @@ describe("Hyperfetch", () => {
     "https://jsonplaceholder.typicode.com"
   );
 
+  const hypfRequest2 = hypf.createRequest("http://localhost:3001");
+
   it("GET", async () => {
     const [getErr, getData] = await hypfRequest.get<
       Array<{
@@ -34,6 +36,23 @@ describe("Hyperfetch", () => {
         title: "foo",
         body: "bar",
         userId: 1,
+      }
+    );
+
+    if (postErr) {
+      console.error("POST Error:", postErr);
+    } else {
+      console.log("POST Data:", postData);
+    }
+  });
+
+  it("POST:login", async () => {
+    const [postErr, postData] = await hypfRequest2.post(
+      "/api/auth/sign-in",
+      { retries: 3, timeout: 5000 },
+      {
+        email: "admin@gmail.com",
+        pasword: "bar1232131",
       }
     );
 

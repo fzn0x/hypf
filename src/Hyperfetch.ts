@@ -19,6 +19,7 @@ import {
 } from "./constant.js";
 
 import { appendParams } from "./utils/append-params.js";
+import { createHTTPError } from "./utils/create-http-error";
 
 const defaultBackoff = (retryCount: number, factor: number) =>
   Math.pow(2, retryCount) * 1000 * factor; // Exponential backoff, starting from 1 second
@@ -164,6 +165,10 @@ function createRequest(
         contentType && contentType.includes("application/json")
           ? await response.json()
           : await response.text();
+
+      if (!response.ok) {
+        throw createHTTPError(response, responseData);
+      }
 
       // Execute post-request hook
       if (hooks?.postRequest) {
