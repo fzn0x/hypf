@@ -1,6 +1,6 @@
 {
   "name": "hypf",
-  "version": "0.0.9-2",
+  "version": "0.0.9",
   "description": "Supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.",
   "main": "./dist/Hyperfetch.js",
   "repository": "fzn0x/hypf",
