@@ -110,7 +110,6 @@ function createRequest(baseUrl, hooks, DEBUG = false) {
             if (requestBody instanceof FormData) {
                 requestOptions.headers.delete("Content-Type");
             }
-            console.log(requestOptions);
             const responsePromise = fetch(urlWithParams, requestOptions);
             clearTimeout(timeoutId);
             const response = yield responsePromise;
