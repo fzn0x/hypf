@@ -1,10 +1,13 @@
 import hypf from "node:hypf";
+import fs from "node:node:fs";
 
 describe("Hyperfetch", () => {
   // TODO: create a local mock server for typicode
   const hypfRequest = hypf.createRequest(
     "https://jsonplaceholder.typicode.com"
   );
+
+  const hypfRequest2 = hypf.createRequest("http://localhost:3001");
 
   it("GET", async () => {
     const [getErr, getData] = await hypfRequest.get<
@@ -36,6 +39,39 @@ describe("Hyperfetch", () => {
         userId: 1,
       }
     );
+
+    if (postErr) {
+      console.error("POST Error:", postErr);
+    } else {
+      console.log("POST Data:", postData);
+    }
+  });
+
+  it("POST:upload", async () => {
+    const formdata = new FormData();
+    const chunks: BlobPart[] = [];
+
+    const stream = fs.createReadStream(
+      "C:/Users/User/Downloads/Screenshot 2024-05-14 060852.png"
+    );
+
+    // Create a promise to handle the stream end event
+    const streamEndPromise = new Promise((resolve, reject) => {
+      stream.on("data", (chunk) => chunks.push(chunk));
+      stream.once("end", resolve);
+      stream.once("error", reject);
+    });
+
+    // Wait for the stream to finish
+    await streamEndPromise;
+
+    // Convert chunks to Blob
+    const blob = new Blob(chunks);
+    formdata.append("image[]", blob);
+
+    const [postErr, postData] = await hypfRequest2.post("/api/upload-file", {
+      body: formdata,
+    });
 
     if (postErr) {
       console.error("POST Error:", postErr);
