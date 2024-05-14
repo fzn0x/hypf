@@ -92,7 +92,11 @@ function createRequest(
 
       // Set default Content-Type to application/json if not provided
       if (!reqHeaders.get("Content-Type") && data && typeof data === "object") {
-        reqHeaders.set("Content-Type", "application/json");
+        if (
+          !(((data as { body: FormData })?.body || data) instanceof FormData)
+        ) {
+          reqHeaders.set("Content-Type", "application/json");
+        }
       }
 
       // Execute pre-timeout hook
@@ -148,19 +152,33 @@ function createRequest(
         otherOptions.duplex = "half";
       }
 
-      const responsePromise = fetch(urlWithParams, {
+      const requestBody =
+        options.body instanceof FormData
+          ? options.body
+          : data
+          ? JSON.stringify(data)
+          : undefined;
+
+      const requestOptions = {
         method,
         signal: isAbortControllerSupported ? globalThis.abortSignal : null,
         headers: reqHeaders,
         ...otherOptions,
-        body: data ? JSON.stringify(data) : undefined,
-      });
+        body: requestBody,
+      };
+
+      if (requestBody instanceof FormData) {
+        requestOptions.headers.delete("Content-Type");
+      }
+
+      const responsePromise = fetch(urlWithParams, requestOptions);
 
       clearTimeout(timeoutId);
 
       const response = await responsePromise;
 
       const contentType = response.headers.get("content-type");
+
       const responseData =
         contentType && contentType.includes("application/json")
           ? await response.json()

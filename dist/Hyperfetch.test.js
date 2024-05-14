@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import hypf from "hypf";
+import fs from "node:fs";
 describe("Hyperfetch", () => {
     // TODO: create a local mock server for typicode
     const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com");
@@ -38,10 +39,23 @@ describe("Hyperfetch", () => {
             console.log("POST Data:", postData);
         }
     }));
-    it("POST:login", () => __awaiter(void 0, void 0, void 0, function* () {
-        const [postErr, postData] = yield hypfRequest2.post("/api/auth/sign-in", { retries: 3, timeout: 5000 }, {
-            email: "admin@gmail.com",
-            pasword: "bar1232131",
+    it("POST:upload", () => __awaiter(void 0, void 0, void 0, function* () {
+        const formdata = new FormData();
+        const chunks = [];
+        const stream = fs.createReadStream("C:/Users/User/Downloads/Screenshot 2024-05-14 060852.png");
+        // Create a promise to handle the stream end event
+        const streamEndPromise = new Promise((resolve, reject) => {
+            stream.on("data", (chunk) => chunks.push(chunk));
+            stream.once("end", resolve);
+            stream.once("error", reject);
+        });
+        // Wait for the stream to finish
+        yield streamEndPromise;
+        // Convert chunks to Blob
+        const blob = new Blob(chunks);
+        formdata.append("image[]", blob);
+        const [postErr, postData] = yield hypfRequest2.post("/api/upload-file", {
+            body: formdata,
         });
         if (postErr) {
             console.error("POST Error:", postErr);
