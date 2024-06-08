@@ -294,6 +294,32 @@ const [getErr, getData] = await hypfRequest.get("/posts", {
 }); // /posts?id=1
 ```
 
+### Form Data
+
+Example usecase for Upload File:
+
+```ts
+export async function postImportFile(formData: FormData) {
+  const [postErr, postData] = await hypfRequest.post(
+    `/api/upload-file/import`,
+    {
+      body: formData,
+      credentials:
+        import.meta.env.VITE_USER_NODE_ENV === "development"
+          ? "same-origin"
+          : "include",
+    }
+  );
+
+  if (postErr) {
+    throw postErr;
+  }
+
+  return postData;
+}
+
+```
+
 ### Applications Knowledges
 
 #### Constant
