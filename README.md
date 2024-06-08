@@ -2,6 +2,10 @@
     <img width="55%" src="./assets/hyperfetch.png">
 </p>
 
+> :warning: Currently still tested with SSR
+
+> Latest release 0.1.0: Fetch for Upload File is supported, check our example https://github.com/fzn0x/hypf/blob/cbf34afa892e9231e64d5f4c8158c041a9425f36/src/Hyperfetch.test.ts#L50C1-L81C6
+
 Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.
 
 ```sh
