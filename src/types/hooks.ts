@@ -1,20 +1,15 @@
-import type { RequestOptions } from "./request.js";
+import type { RequestOptions } from './request.js'
 
 // Hooks interface
 export interface Hooks {
-  preRequest?: (url: string, options: RequestOptions) => void;
+  preRequest?: (url: string, options: RequestOptions) => void
   postRequest?: <T, U>(
     url: string,
     options: RequestOptions,
     data?: T,
     response?: [Error | null, U]
-  ) => void;
-  preRetry?: (
-    url: string,
-    options: RequestOptions,
-    retryCount: number,
-    retryLeft: number
-  ) => void;
+  ) => void
+  preRetry?: (url: string, options: RequestOptions, retryCount: number, retryLeft: number) => void
   postRetry?: <T, U>(
     url: string,
     options: RequestOptions,
@@ -22,7 +17,7 @@ export interface Hooks {
     response?: [Error | null, U],
     retryCount?: number,
     retryLeft?: number
-  ) => void;
-  preTimeout?: (url: string, options: RequestOptions) => void;
-  postTimeout?: (url: string, options: RequestOptions) => void;
+  ) => void
+  preTimeout?: (url: string, options: RequestOptions) => void
+  postTimeout?: (url: string, options: RequestOptions) => void
 }

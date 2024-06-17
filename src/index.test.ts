@@ -1,49 +1,49 @@
-import hypf from "../dist";
+import hypf from '../dist'
 
-describe("init", () => {
+describe('init', () => {
   // TODO: create a local mock server for typicode
-  const hypfRequest = hypf.init("https://jsonplaceholder.typicode.com");
+  const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com')
 
   // only uncomment for upload file testing purposes
   // const hypfRequest2 = hypf.init("http://localhost:3001");
 
-  it("GET", async () => {
+  it('GET', async () => {
     const [getErr, getData] = await hypfRequest.get<
       Array<{
-        userId: number;
-        id: number;
-        title: string;
-        body: string;
+        userId: number
+        id: number
+        title: string
+        body: string
       }>
-    >("/posts", {
+    >('/posts', {
       retries: 3,
       timeout: 5000,
-    });
+    })
 
     if (getErr) {
-      console.error("GET Error:", getErr);
+      console.error('GET Error:', getErr)
     } else {
-      console.log("GET Data:", getData?.[0]?.id);
+      console.log('GET Data:', getData?.[0]?.id)
     }
-  });
+  })
 
-  it("POST", async () => {
+  it('POST', async () => {
     const [postErr, postData] = await hypfRequest.post(
-      "/posts",
+      '/posts',
       { retries: 3, timeout: 5000 },
       {
-        title: "foo",
-        body: "bar",
+        title: 'foo',
+        body: 'bar',
         userId: 1,
       }
-    );
+    )
 
     if (postErr) {
-      console.error("POST Error:", postErr);
+      console.error('POST Error:', postErr)
     } else {
-      console.log("POST Data:", postData);
+      console.log('POST Data:', postData)
     }
-  });
+  })
 
   // it("POST:upload", async () => {
   //   const formdata = new FormData();
@@ -78,39 +78,39 @@ describe("init", () => {
   //   }
   // });
 
-  it("PUT", async () => {
+  it('PUT', async () => {
     const [putErr, putData] = await hypfRequest.put(
-      "/posts/1",
+      '/posts/1',
       { retries: 3, timeout: 5000 },
       {
-        title: "foo",
-        body: "bar",
+        title: 'foo',
+        body: 'bar',
         userId: 1,
       }
-    );
+    )
 
     if (putErr) {
-      console.error("PUT Error:", putErr);
+      console.error('PUT Error:', putErr)
     } else {
-      console.log("PUT Data:", putData);
+      console.log('PUT Data:', putData)
     }
-  });
+  })
 
-  it("DELETE", async () => {
+  it('DELETE', async () => {
     const [deleteErr, deleteData] = await hypfRequest.delete(
-      "/posts/1",
+      '/posts/1',
       { retries: 3, timeout: 5000 },
       {
-        title: "foo",
-        body: "bar",
+        title: 'foo',
+        body: 'bar',
         userId: 1,
       }
-    );
+    )
 
     if (deleteErr) {
-      console.error("DELETE Error:", deleteErr);
+      console.error('DELETE Error:', deleteErr)
     } else {
-      console.log("DELETE Data:", deleteData);
+      console.log('DELETE Data:', deleteData)
     }
-  });
-});
+  })
+})
