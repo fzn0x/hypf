@@ -2,11 +2,9 @@
     <img width="55%" src="./assets/hyperfetch.png">
 </p>
 
-> :warning: Currently still tested with SSR
-
-> Latest release 0.1.0: Fetch for Upload File is supported, check our example https://github.com/fzn0x/hypf/blob/cbf34afa892e9231e64d5f4c8158c041a9425f36/src/Hyperfetch.test.ts#L50C1-L81C6
-
 Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.
+
+## Get Started
 
 ```sh
 # Node.js
@@ -83,22 +81,6 @@ and Browsers:
     );
   })();
 </script>
-```
-
-# Why Hyperfetch?
-
-## Simple Core
-
-We define things easier with composed functions, ofcourse contribute easier.
-
-```js
-get: (url, options, data) => httpMethodFunction(url, options)('GET', options, data),
-post: (url, options, data) => httpMethodFunction(url, options)('POST', options, data),
-put: (url, options, data) => httpMethodFunction(url, options)('PUT', options, data),
-delete: (url, options, data) => httpMethodFunction(url, options)('DELETE', options, data),
-patch: (url, options, data) => httpMethodFunction(url, options)('PATCH', options, data),
-options: (url, options, data) => httpMethodFunction(url, options)('OPTIONS', options, data),
-getAbortController,
 ```
 
 ## Error Handling
@@ -317,7 +299,6 @@ export async function postImportFile(formData: FormData) {
 
   return postData;
 }
-
 ```
 
 ### Applications Knowledges
@@ -353,6 +334,6 @@ if (deleteErr) {
 }
 ```
 
----
+## License
 
-License MIT 2024
+Hyperfetch is [MIT-licensed](./LICENSE) and Open Source Software by [fzn0x](https://github.com/fzn0x)

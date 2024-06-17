@@ -1,3 +1,4 @@
+import type { InitOptions } from "./init.js";
 export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
 export interface RequestOptions extends RequestInit {
     method?: RequestMethod | string;
@@ -10,7 +11,7 @@ export interface RequestOptions extends RequestInit {
     retryOnTimeout?: boolean;
     params?: Record<string, string | number>;
 }
-export type RequestFunction = (url?: string, options?: RequestOptions, data?: unknown) => Promise<[Error | null, null]>;
+export type RequestFunction = (url?: string, options?: RequestOptions, data?: unknown, wrapper?: InitOptions) => Promise<[Error | null, null]>;
 export type HttpMethodFunction = (url: string, options: RequestOptions | undefined) => RequestFunction;
 export interface HttpRequestFunctions {
     get<T = any>(url: string, options?: RequestOptions, data?: unknown): Promise<[Error | null, T | null]>;

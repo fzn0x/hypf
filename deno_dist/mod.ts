@@ -1,1 +1,1 @@
-export * from "./Hyperfetch.ts";
+export * from "./index.ts";
