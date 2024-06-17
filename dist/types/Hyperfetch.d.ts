@@ -1,8 +1,8 @@
-import type { HttpRequestFunctions } from "./request.ts";
-import type { Hooks } from "./hooks.ts";
-declare function createRequest(baseUrl?: string, hooks?: Hooks, DEBUG?: boolean): HttpRequestFunctions;
+import type { HttpRequestFunctions } from "./request.js";
+import type { Hooks } from "./hooks.js";
+declare function init(baseUrl?: string, hooks?: Hooks, DEBUG?: boolean): HttpRequestFunctions;
 declare const _default: {
-    createRequest: typeof createRequest;
+    init: typeof init;
 };
 export default _default;
 //# sourceMappingURL=Hyperfetch.d.ts.map

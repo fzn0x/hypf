@@ -1,8 +1,8 @@
 {
   "name": "hypf",
   "version": "0.1.0",
-  "description": "Supertiny and stunning HTTP client for frontend apps. Best frontend wrapper for Fetch API.",
-  "main": "./dist/Hyperfetch.js",
+  "description": "Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.",
+  "main": "./dist/index.js",
   "repository": "fzn0x/hypf",
   "type": "module",
   "files": [
@@ -11,14 +11,14 @@
   "author": {
     "name": "Muhammad Fauzan",
     "email": "developerfauzan@gmail.com",
-    "url": "https://fzn0x.vercel.app/"
+    "url": "https://fzn0x.dev/"
   },
   "sideEffects": false,
   "exports": {
-    "types": "./dist/Hyperfetch.d.ts",
-    "default": "./dist/Hyperfetch.js"
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
   },
-  "types": "./dist/Hyperfetch.d.ts",
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": ">=18"
   },

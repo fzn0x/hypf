@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = /** @type { import('webpack').Configuration } */ {
   mode: "production",
-  entry: "./src/Hyperfetch.ts",
+  entry: "./src/index.ts",
   devtool: "source-map",
   output: {
     library: {

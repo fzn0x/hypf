@@ -1,12 +1,12 @@
-import type { HttpRequestFunctions } from "./request.ts/index.ts";
-import type { Hooks } from "./hooks.ts/index.ts";
+import type { HttpRequestFunctions } from "./request.ts";
+import type { Hooks } from "./hooks.ts";
 
-declare function createRequest(
+declare function init(
   baseUrl?: string,
   hooks?: Hooks,
   DEBUG?: boolean
 ): HttpRequestFunctions;
 declare const _default: {
-  createRequest: typeof createRequest;
+  init: typeof init;
 };
 export default _default;

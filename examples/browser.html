@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="../dist/hyperfetch-browser.min.js"></script>
+
+    <script>
+      (async () => {
+        const hooks = {
+          preRequest: (url, options) => {
+            console.log(`Preparing to send request to: ${url}`);
+            // You can perform actions before the request here
+          },
+          postRequest: (url, options, data, response) => {
+            console.log(
+              `Request to ${url} completed with status: ${
+                response?.[0] ? "error" : "success"
+              }`
+            );
+            // You can perform actions after the request here, including handling errors
+          },
+        };
+
+        const requestWithHooks = hypf.default.createRequest(
+          "https://jsonplaceholder.typicode.com",
+          hooks,
+          true
+        ); // Pass true for DEBUG mode
+
+        // Example usage of POST method with retry and timeout
+        const [postErr, postData] = await requestWithHooks.post(
+          "/posts",
+          { retries: 3, timeout: 5000 },
+          {
+            title: "foo",
+            body: "bar",
+            userId: 1,
+          }
+        );
+
+        if (postErr) {
+          console.error("POST Error:", postErr);
+        } else {
+          console.log("POST Data:", postData);
+        }
+
+        // Example usage of PUT method with retry and timeout
+        const [putErr, putData] = await requestWithHooks.put(
+          "/posts/1",
+          { retries: 3, timeout: 5000 },
+          {
+            title: "foo",
+            body: "bar",
+            userId: 1,
+          }
+        );
+
+        if (putErr) {
+          console.error("PUT Error:", putErr);
+        } else {
+          console.log("PUT Data:", putData);
+        }
+
+        // Example usage of GET method with retry and timeout
+        const [getErr, getData] = await requestWithHooks.get("/posts", {
+          retries: 3,
+          timeout: 5000,
+        });
+
+        if (getErr) {
+          console.error("GET Error:", getErr);
+        } else {
+          console.log("GET Data:", getData);
+        }
+
+        // DELETE will not work if you uncomment this
+        const controller = requestWithHooks.getAbortController();
+
+        controller.abort();
+
+        // Example usage of DELETE method with retry and timeout
+        const [deleteErr, deleteData] = await requestWithHooks.delete(
+          "/posts/1",
+          { retries: 3, timeout: 5000 }
+        );
+
+        if (deleteErr) {
+          console.error("DELETE Error:", deleteErr);
+        } else {
+          console.log("DELETE Data:", deleteData);
+        }
+      })();
+    </script>
+  </body>
+</html>

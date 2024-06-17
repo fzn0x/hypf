@@ -32,10 +32,10 @@
     "declarationMap": true,
     "types": ["vitest/globals"],
     "paths": {
-      "hypf": ["./src/Hyperfetch.ts"],
+      "hypf": ["src/index.ts"],
       "*": ["*", "utils/*"]
     }
   },
-  "exclude": ["types", "examples"],
+  "exclude": ["types", "examples", "src/index.test.ts"],
   "include": ["src/**/*"]
 }

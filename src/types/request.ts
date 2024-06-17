@@ -1,3 +1,5 @@
+import type { InitOptions } from "./init.js";
+
 export type RequestMethod =
   | "GET"
   | "POST"
@@ -21,7 +23,8 @@ export interface RequestOptions extends RequestInit {
 export type RequestFunction = (
   url?: string,
   options?: RequestOptions,
-  data?: unknown
+  data?: unknown,
+  wrapper?: InitOptions
 ) => Promise<[Error | null, null]>;
 
 export type HttpMethodFunction = (

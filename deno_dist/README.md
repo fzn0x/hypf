@@ -4,6 +4,8 @@
 
 Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.
 
+## Get Started
+
 ```sh
 # Node.js
 npm install hypf
@@ -79,22 +81,6 @@ and Browsers:
     );
   })();
 </script>
-```
-
-# Why Hyperfetch?
-
-## Simple Core
-
-We define things easier with composed functions, ofcourse contribute easier.
-
-```js
-get: (url, options, data) => httpMethodFunction(url, options)('GET', options, data),
-post: (url, options, data) => httpMethodFunction(url, options)('POST', options, data),
-put: (url, options, data) => httpMethodFunction(url, options)('PUT', options, data),
-delete: (url, options, data) => httpMethodFunction(url, options)('DELETE', options, data),
-patch: (url, options, data) => httpMethodFunction(url, options)('PATCH', options, data),
-options: (url, options, data) => httpMethodFunction(url, options)('OPTIONS', options, data),
-getAbortController,
 ```
 
 ## Error Handling
@@ -290,6 +276,31 @@ const [getErr, getData] = await hypfRequest.get("/posts", {
 }); // /posts?id=1
 ```
 
+### Form Data
+
+Example usecase for Upload File:
+
+```ts
+export async function postImportFile(formData: FormData) {
+  const [postErr, postData] = await hypfRequest.post(
+    `/api/upload-file/import`,
+    {
+      body: formData,
+      credentials:
+        import.meta.env.VITE_USER_NODE_ENV === "development"
+          ? "same-origin"
+          : "include",
+    }
+  );
+
+  if (postErr) {
+    throw postErr;
+  }
+
+  return postData;
+}
+```
+
 ### Applications Knowledges
 
 #### Constant
@@ -323,6 +334,6 @@ if (deleteErr) {
 }
 ```
 
----
+## License
 
-License MIT 2024
+Hyperfetch is [MIT-licensed](./LICENSE) and Open Source Software by [fzn0x](https://github.com/fzn0x)

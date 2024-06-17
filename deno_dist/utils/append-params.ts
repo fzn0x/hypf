@@ -1,7 +1,7 @@
-export function appendParams(
+export const appendParams = (
   url: string,
   params?: Record<string, string | number>
-): string {
+): string => {
   if (!params) return url;
 
   const urlWithParams = new URL(url);
@@ -10,4 +10,4 @@ export function appendParams(
   );
 
   return urlWithParams.toString();
-}
+};
