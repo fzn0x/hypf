@@ -32,7 +32,7 @@
     "declarationMap": true,
     "types": ["vitest/globals"],
     "paths": {
-      "hypf": ["src/index.ts"],
+      "hypf": ["dist"],
       "*": ["*", "utils/*"]
     }
   },

@@ -22,7 +22,7 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/cjs/index.js"
     }
@@ -41,6 +41,7 @@
     "test": "vitest",
     "build": "rimraf dist && tsx ./build.ts && bun run copy:package.cjs.json && webpack",
     "watch": "rimraf dist && tsx ./build.ts --watch && bun run copy:package.cjs.json",
+    "postbuild": "publint",
     "release": "np"
   },
   "keywords": [
