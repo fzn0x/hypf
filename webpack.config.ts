@@ -11,7 +11,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
       type: "umd",
       umdNamedDefine: true,
     },
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "browser"),
     filename: "hyperfetch-browser.min.js",
   },
   resolve: {

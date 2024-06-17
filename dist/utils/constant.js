@@ -1,12 +1,23 @@
-// Default maximum recommended timeout in milliseconds (adjust as needed)
-export const DEFAULT_MAX_TIMEOUT = 2147483647;
-export const DEFAULT_BACKOFF_FACTOR = 0.3;
-export const DEFAULT_JITTER_FACTOR = 1;
-export const isAbortControllerSupported = typeof globalThis.AbortController === "function";
-export const isReadableStreamSupported = typeof globalThis.ReadableStream === "function";
-export const isWriteableStreamSupported = typeof globalThis.WritableStream === "function";
-export const isWebsocketSupported = typeof globalThis.WebSocket === "function";
-export const isWebRTCSupported = typeof globalThis.RTCPeerConnection === "function";
-export const isFormDataSupported = typeof globalThis.FormData === "function";
-export const isNode = typeof process !== "undefined" && process.release.name === "node";
-//# sourceMappingURL=constant.js.map
+// src/utils/constant.ts
+var DEFAULT_MAX_TIMEOUT = 2147483647;
+var DEFAULT_BACKOFF_FACTOR = 0.3;
+var DEFAULT_JITTER_FACTOR = 1;
+var isAbortControllerSupported = typeof globalThis.AbortController === "function";
+var isReadableStreamSupported = typeof globalThis.ReadableStream === "function";
+var isWriteableStreamSupported = typeof globalThis.WritableStream === "function";
+var isWebsocketSupported = typeof globalThis.WebSocket === "function";
+var isWebRTCSupported = typeof globalThis.RTCPeerConnection === "function";
+var isFormDataSupported = typeof globalThis.FormData === "function";
+var isNode = typeof process !== "undefined" && process.release.name === "node";
+export {
+  DEFAULT_BACKOFF_FACTOR,
+  DEFAULT_JITTER_FACTOR,
+  DEFAULT_MAX_TIMEOUT,
+  isAbortControllerSupported,
+  isFormDataSupported,
+  isNode,
+  isReadableStreamSupported,
+  isWebRTCSupported,
+  isWebsocketSupported,
+  isWriteableStreamSupported
+};

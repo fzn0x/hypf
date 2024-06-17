@@ -15,18 +15,22 @@
   },
   "sideEffects": false,
   "exports": {
-    "types": "./dist/index.d.ts",
-    "default": "./dist/index.js"
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "types": "./dist/index.d.ts",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
+    "copy:package.cjs.json": "cp ./package.cjs.json ./dist/cjs/package.json && cp ./package.cjs.json ./dist/types/package.json ",
     "vitest:watch": "vitest --watch",
     "test": "vitest",
-    "build": "rimraf dist && tsc -p tsconfig.build.json && webpack",
-    "denoify": "rimraf deno_dist && denoify"
+    "build": "rimraf dist && tsx ./build.ts && bun run copy:package.cjs.json && webpack",
+    "watch": "rimraf dist && tsx ./build.ts --watch && bun run copy:package.cjs.json"
   },
   "keywords": [
     "fetch",
@@ -63,9 +67,11 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.26",
-    "denoify": "^1.6.9",
+    "arg": "^5.0.2",
+    "esbuild": "^0.15.12",
     "rimraf": "^5.0.5",
     "ts-loader": "^9.5.1",
+    "tsx": "^4.15.6",
     "typescript": "^5.4.2",
     "vitest": "^1.6.0",
     "webpack": "^5.90.3",

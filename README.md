@@ -4,6 +4,8 @@
 
 Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.
 
+The most flexible fetch wrapper that allows you to have more than one practice to get things done!
+
 ## Get Started
 
 ```sh
@@ -18,7 +20,7 @@ The idea of this tool is to provide lightweight `fetch` wrapper for Node.js, Bun
 ```js
 import hypf from "hypf";
 
-const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com"); // Pass true for DEBUG mode
+const hypfRequest = hypf.init("https://jsonplaceholder.typicode.com"); // Pass true for DEBUG mode
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await hypfRequest.post(
@@ -47,7 +49,7 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    const hypfInstance = await hypf.createRequest(
+    const hypfInstance = await hypf.init(
       "https://jsonplaceholder.typicode.com"
     );
 
@@ -72,13 +74,11 @@ export default {
 and Browsers:
 
 ```html
-<script src="https://unpkg.com/hypf/dist/hyperfetch-browser.min.js"></script>
+<script src="https://unpkg.com/hypf/browser/hyperfetch-browser.min.js"></script>
 
 <script>
   (async () => {
-    const request = hypf.default.createRequest(
-      "https://jsonplaceholder.typicode.com"
-    );
+    const request = hypf.default.init("https://jsonplaceholder.typicode.com");
   })();
 </script>
 ```
@@ -88,7 +88,7 @@ and Browsers:
 No need to write `try..catch` ! hypf do it like this:
 
 ```js
-const hypfRequest = hypf.createRequest("https://jsonplaceholder.typicode.com";
+const hypfRequest = hypf.init("https://jsonplaceholder.typicode.com";
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await hypfRequest.post(
@@ -128,7 +128,7 @@ const hooks = {
   },
 };
 
-const requestWithHooks = hypf.createRequest(
+const requestWithHooks = hypf.init(
   "https://jsonplaceholder.typicode.com",
   hooks,
   true
