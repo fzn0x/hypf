@@ -5,6 +5,9 @@
   "main": "./dist/Hyperfetch.js",
   "repository": "fzn0x/hypf",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "author": {
     "name": "Muhammad Fauzan",
     "email": "developerfauzan@gmail.com",
