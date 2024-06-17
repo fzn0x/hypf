@@ -36,6 +36,6 @@
       "*": ["*", "utils/*"]
     }
   },
-  "exclude": ["types", "examples"],
+  "exclude": ["types", "examples", "dist"],
   "include": ["src/**/*"]
 }
