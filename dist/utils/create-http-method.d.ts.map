@@ -1,1 +1,0 @@
-{"version":3,"file":"create-http-method.d.ts","sourceRoot":"","sources":["../../src/utils/create-http-method.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,aAAa,EAAE,MAAM,qBAAqB,CAAC;AACzD,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,kBAAkB,CAAC;AAIpD,eAAO,MAAM,kBAAkB,QACxB,MAAM,oEAGL,OAAO,eACA,WAAW,kCAGzB,CAAC"}
