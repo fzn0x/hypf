@@ -2,6 +2,8 @@
     <img width="55%" src="./assets/hyperfetch.png">
 </p>
 
+> :warning: Hypf still in early-stage, so any sudden breaking changes is expected
+
 <hr />
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/fzn0x/hypf/ci.yml?branch=main)](https://github.com/fzn0x/hypf/actions)
@@ -116,7 +118,7 @@ if (postErr) {
 }
 ```
 
-or throw on error with `throwOnError` options sets `true`
+or since `v0.2.2` throw on error with `throwOnError` options sets `true`
 
 ```ts
 const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com')
