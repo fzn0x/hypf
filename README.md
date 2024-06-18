@@ -123,7 +123,6 @@ or since `v0.2.2` throw on error with `throwOnError` options sets `true`
 ```ts
 const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com')
 
-// Example usage of POST method with retry and timeout
 try {
   const response = await hypfRequest.post(
     '/posts',
@@ -135,11 +134,7 @@ try {
     }
   )
 
-  if (postErr) {
-    console.error('POST Error:', postErr)
-  } else {
-    console.log('POST Data:', postData)
-  }
+  console.log(response)
 } catch (err) {
   console.log(err)
 }
