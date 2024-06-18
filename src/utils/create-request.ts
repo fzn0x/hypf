@@ -17,6 +17,18 @@ import { appendParams } from './append-params.js'
 import { createHTTPError } from './create-http-error.js'
 import { defaultBackoff, defaultJitter } from './default-retries.js'
 
+/**
+ * Creates and sends an HTTP request.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @param {object} options - The options for the request, including method, headers, etc.
+ * @param {object} data - The data to be sent with the request.
+ * @param {InitOptions} initOptions - Initialization options including baseUrl, hooks, etc.
+ *
+ * @returns {Promise<[Error | null, any]>} A promise that resolves with an array containing an error (if any) and the response data.
+ *
+ * @throws {Error} If the request fails and `throwOnError` is true.
+ */
 export const createRequest: RequestFunction = async (
   url = '',
   options = {},

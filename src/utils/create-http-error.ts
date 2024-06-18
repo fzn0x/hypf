@@ -1,4 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+/**
+ * Creates an HTTP error object based on the response and response data.
+ *
+ * @param {Response} response - The Response object from the fetch request.
+ * @param {Response} responseData - The data returned in the response.
+ *
+ * @returns {Error} An Error object with additional properties for response and responseData.
+ */
 export function createHTTPError(response: Response, responseData: Response) {
   const code = response.status || response.status === 0 ? response.status : ''
   const title = response.statusText || ''
