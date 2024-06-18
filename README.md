@@ -308,7 +308,6 @@ Example usecase for Upload File:
 export async function postImportFile(formData: FormData) {
   const [postErr, postData] = await hypfRequest.post(`/api/upload-file/import`, {
     body: formData,
-    credentials: import.meta.env.VITE_USER_NODE_ENV === 'development' ? 'same-origin' : 'include',
   })
 
   if (postErr) {
