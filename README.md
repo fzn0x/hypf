@@ -31,7 +31,7 @@ bun install hypf
 
 The idea of this tool is to provide lightweight `fetch` wrapper for Node.js, Bun:
 
-```js
+```ts
 import hypf from 'hypf'
 
 const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com') // Pass true for DEBUG mode
@@ -95,24 +95,24 @@ and Browsers:
 
 No need to write `try..catch` ! hypf do it like this:
 
-```js
-const hypfRequest = hypf.init("https://jsonplaceholder.typicode.com");
+```ts
+const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com')
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await hypfRequest.post(
-    '/posts',
-    { retries: 3, timeout: 5000 },
-    {
-        title: 'foo',
-        body: 'bar',
-        userId: 1,
-    }
-);
+  '/posts',
+  { retries: 3, timeout: 5000 },
+  {
+    title: 'foo',
+    body: 'bar',
+    userId: 1,
+  }
+)
 
 if (postErr) {
-    console.error('POST Error:', postErr);
+  console.error('POST Error:', postErr)
 } else {
-    console.log('POST Data:', postData);
+  console.log('POST Data:', postData)
 }
 ```
 
@@ -120,7 +120,7 @@ if (postErr) {
 
 Hooks is supported and expected to not modifying the original result by design.
 
-```js
+```ts
 const hooks = {
   preRequest: (url, options) => {
     console.log(`Preparing to send request to: ${url}`)
@@ -175,7 +175,7 @@ export interface Hooks {
 
 You can retry your request once it's failed!
 
-```js
+```ts
 const [postErr, postData] = await requestWithHooks.post(
   '/posts',
   { retries: 3, timeout: 5000 },
@@ -189,7 +189,7 @@ const [postErr, postData] = await requestWithHooks.post(
 
 Jitter and backoff also supported. 😎
 
-```js
+```ts
 const [postErr, postData] = await requestWithHooks.post(
   '/posts',
   { retries: 3, timeout: 5000, jitter: true }, // false `jitter` to use backoff
@@ -203,7 +203,7 @@ const [postErr, postData] = await requestWithHooks.post(
 
 You can modify backoff and jitter factor as well.
 
-```js
+```ts
 const [postErr, postData] = await requestWithHooks.post(
   '/posts',
   { retries: 3, timeout: 5000, jitter: true, jitterFactor: 10000 }, // false `jitter` to use backoff
@@ -229,7 +229,7 @@ const [postErr, postData] = await requestWithHooks.post(
 
 Retry on timeout also supported.
 
-```js
+```ts
 const [postErr, postData] = await requestWithHooks.post(
   '/posts',
   { retries: 3, timeout: 5000, retryOnTimeout: true },
@@ -290,21 +290,11 @@ export async function postImportFile(formData: FormData) {
 }
 ```
 
-### Applications Knowledges
-
-#### Constant
-
-```js
-const DEFAULT_MAX_TIMEOUT = 2147483647
-const DEFAULT_BACKOFF_FACTOR = 0.3
-const DEFAULT_JITTER_FACTOR = 1
-```
-
-#### AbortController
+### AbortController
 
 We expose abort controller, you can cancel next request anytime.
 
-```js
+```ts
 // DELETE will not work if you uncomment this
 const controller = requestWithHooks.getAbortController()
 
