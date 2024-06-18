@@ -12,6 +12,8 @@ export interface RequestOptions extends RequestInit {
   timeout?: number // Timeout in milliseconds
   retryOnTimeout?: boolean // New option to retry on timeout errors
   params?: Record<string, string | number> // URLSearchParams option
+  proxy?: string
+  unix?: string
 }
 
 export type RequestFunction = (
