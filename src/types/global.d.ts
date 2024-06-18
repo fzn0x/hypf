@@ -1,5 +1,5 @@
 /* eslint-disable no-var */
-declare module globalThis {
+declare module global {
   var abortController: AbortController
   var abortSignal: AbortSignal
 }
