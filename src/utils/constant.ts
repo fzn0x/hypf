@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 // Default maximum recommended timeout in milliseconds (adjust as needed)
 export const DEFAULT_MAX_TIMEOUT = 2147483647
 

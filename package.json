@@ -82,7 +82,7 @@
   },
   "devDependencies": {
     "@hono/eslint-config": "^0.0.6",
-    "@types/node": "^20.11.26",
+    "@types/node": "^20.14.4",
     "arg": "^5.0.2",
     "esbuild": "^0.15.12",
     "esbuild-register": "^3.5.0",
