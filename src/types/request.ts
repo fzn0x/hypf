@@ -14,6 +14,7 @@ export interface RequestOptions extends RequestInit {
   params?: Record<string, string | number> // URLSearchParams option
   proxy?: string
   unix?: string
+  initOptions?: InitOptions
 }
 
 export type RequestFunction = (
