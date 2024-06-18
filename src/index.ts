@@ -14,7 +14,9 @@ function init(
   }
 
   // Override initOptions baseUrl if baseUrl exists
-  if (baseUrl) initOptions.baseUrl = baseUrl
+  if (baseUrl) {
+    initOptions.baseUrl = baseUrl
+  }
 
   return {
     get: (url, options, data) => createHTTPMethod(url, 'GET', options, data, initOptions),
