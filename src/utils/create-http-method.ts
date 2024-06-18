@@ -8,7 +8,7 @@ export const httpMethodFunction = (
   method: RequestMethod = 'GET',
   options = {},
   data: unknown,
-  initOptions: InitOptions
+  initOptions?: InitOptions
 ) => {
   return createRequest(url, { method, ...options }, data, initOptions)
 }

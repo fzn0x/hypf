@@ -1,20 +1,20 @@
-import type { Hooks } from './types/hooks.js'
+import { InitOptions } from './types/init.js'
 import type { HttpRequestFunctions } from './types/request.js'
 
 import { getAbortController } from './utils/get-abort-controller.js'
 import { httpMethodFunction } from './utils/create-http-method.js'
 
-function init(baseUrl?: string, hooks?: Hooks, DEBUG: boolean = false): HttpRequestFunctions {
+function init(
+  baseUrl: string = '',
+  initOptions: InitOptions = Object.create(null)
+): HttpRequestFunctions {
   // Check if fetch is available
   if (typeof fetch === 'undefined') {
     throw new Error('This library is intended for use in the browser environment only.')
   }
 
-  const initOptions = {
-    baseUrl,
-    hooks,
-    DEBUG,
-  }
+  // Override initOptions baseUrl if baseUrl exists
+  if (baseUrl) initOptions.baseUrl = baseUrl
 
   return {
     get: (url, options, data) => httpMethodFunction(url, 'GET', options, data, initOptions),
