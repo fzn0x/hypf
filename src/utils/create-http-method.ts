@@ -6,8 +6,8 @@ import { createRequest } from './create-request.js'
 export const createHTTPMethod = (
   url: string,
   method: RequestMethod = 'GET',
-  options = {},
-  data: unknown,
+  options = Object.create(null),
+  data: { [key: string]: unknown } = Object.create(null),
   initOptions?: InitOptions
 ) => {
   return createRequest(url, { method, ...options }, data, initOptions)
