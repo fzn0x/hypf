@@ -14,7 +14,7 @@ import { createHTTPMethod } from './utils/create-http-method.js'
  *
  * @throws {Error} If `fetch` is not available in the environment.
  */
-function init(
+export function init(
   baseUrl: string = '',
   initOptions: InitOptions = Object.create(null)
 ): HttpRequestFunctions {
