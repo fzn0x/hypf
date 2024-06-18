@@ -21,7 +21,7 @@ export const createRequest: RequestFunction = async (
   url = '',
   options = {},
   data,
-  { baseUrl, hooks, DEBUG }: InitOptions = Object.create(null)
+  { baseUrl, hooks, DEBUG, throwOnError }: InitOptions = Object.create(null)
 ): Promise<[Error | null, null]> => {
   const {
     method = 'GET',
@@ -153,6 +153,10 @@ export const createRequest: RequestFunction = async (
       hooks.postRequest(url, options, data, [null, responseData])
     }
 
+    if (throwOnError) {
+      return responseData
+    }
+
     return [null, responseData]
   } catch (error) {
     // Execute post-request hook for errors
@@ -189,6 +193,11 @@ export const createRequest: RequestFunction = async (
         if (hooks?.postRetry) {
           hooks.postRetry(url, options, data, [retryErr, retryData], retries, retries - 1)
         }
+
+        if (throwOnError) {
+          throw retryErr
+        }
+
         return [retryErr, retryData]
       } else if (options.retries && options.retries > 0) {
         const delay =
@@ -224,14 +233,25 @@ export const createRequest: RequestFunction = async (
             options.retries - 1
           )
         }
+
+        if (throwOnError) {
+          throw retryErr
+        }
+
         return [retryErr, retryData]
+      } else {
+        if (throwOnError) {
+          throw error
+        }
+
+        return [error, null]
       }
     }
 
-    if (error instanceof Error) {
-      return [error, null]
+    if (throwOnError) {
+      throw error
     }
 
-    return [null, null]
+    return [error as Error, null]
   }
 }
