@@ -24,6 +24,7 @@ function init(
     put: (url, options, data) => createHTTPMethod(url, 'PUT', options, data, initOptions),
     delete: (url, options, data) => createHTTPMethod(url, 'DELETE', options, data, initOptions),
     patch: (url, options, data) => createHTTPMethod(url, 'PATCH', options, data, initOptions),
+    head: (url, options, data) => createHTTPMethod(url, 'HEAD', options, data, initOptions),
     options: (url, options, data) => createHTTPMethod(url, 'OPTIONS', options, data, initOptions),
     getAbortController,
   }

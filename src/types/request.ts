@@ -1,6 +1,6 @@
 import type { InitOptions } from './init.js'
 
-export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS'
+export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
 export interface RequestOptions extends RequestInit {
   method?: RequestMethod | string
@@ -43,6 +43,11 @@ export interface HttpRequestFunctions {
     data?: unknown
   ): Promise<[Error | null, T | null]>
   patch<T = unknown>(
+    url: string,
+    options?: RequestOptions,
+    data?: unknown
+  ): Promise<[Error | null, T | null]>
+  head<T = unknown>(
     url: string,
     options?: RequestOptions,
     data?: unknown
