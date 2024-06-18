@@ -72,16 +72,16 @@ export const createRequest: RequestFunction = async (
 
     if (isAbortControllerSupported) {
       // Expose the AbortController instance
-      globalThis.abortController = new AbortController()
+      global.abortController = new AbortController()
 
       // Use the external AbortController instance
-      globalThis.abortSignal = signal ? signal : globalThis.abortController.signal
+      global.abortSignal = signal ? signal : global.abortController.signal
     }
 
     const timeoutId =
       timeout && isAbortControllerSupported
         ? setTimeout(() => {
-            globalThis.abortController.abort()
+            global.abortController.abort()
 
             // Execute post-timeout hook
             if (hooks?.postTimeout) {
@@ -121,7 +121,7 @@ export const createRequest: RequestFunction = async (
 
     const requestOptions = {
       method,
-      signal: isAbortControllerSupported ? globalThis.abortSignal : null,
+      signal: isAbortControllerSupported ? global.abortSignal : null,
       headers: reqHeaders,
       ...otherOptions,
       body: requestBody,
