@@ -15,47 +15,47 @@ export interface RequestOptions extends RequestInit {
 }
 
 export type RequestFunction = (
-  url?: string,
+  url: string,
   options?: RequestOptions,
-  data?: unknown,
-  wrapper?: InitOptions
+  data?: { [key: string]: unknown },
+  initOptions?: InitOptions
 ) => Promise<[Error | null, null]>
 
 export interface HttpRequestFunctions {
   get<T = unknown>(
     url: string,
     options?: RequestOptions,
-    data?: unknown
+    data?: { [key: string]: unknown }
   ): Promise<[Error | null, T | null]>
   post<T = unknown>(
     url: string,
     options?: RequestOptions,
-    data?: unknown
+    data?: { [key: string]: unknown }
   ): Promise<[Error | null, T | null]>
   put<T = unknown>(
     url: string,
     options?: RequestOptions,
-    data?: unknown
+    data?: { [key: string]: unknown }
   ): Promise<[Error | null, T | null]>
   delete<T = unknown>(
     url: string,
     options?: RequestOptions,
-    data?: unknown
+    data?: { [key: string]: unknown }
   ): Promise<[Error | null, T | null]>
   patch<T = unknown>(
     url: string,
     options?: RequestOptions,
-    data?: unknown
+    data?: { [key: string]: unknown }
   ): Promise<[Error | null, T | null]>
   head<T = unknown>(
     url: string,
     options?: RequestOptions,
-    data?: unknown
+    data?: { [key: string]: unknown }
   ): Promise<[Error | null, T | null]>
   options<T = unknown>(
     url: string,
     options?: RequestOptions,
-    data?: unknown
+    data?: { [key: string]: unknown }
   ): Promise<[Error | null, T | null]>
   getAbortController(): AbortController | null
 }

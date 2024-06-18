@@ -117,7 +117,11 @@ export const createRequest: RequestFunction = async (
     }
 
     const requestBody =
-      options.body instanceof FormData ? options.body : data ? JSON.stringify(data) : undefined
+      options.body instanceof FormData
+        ? options.body
+        : Object.keys(data as { [key: string]: unknown }).length !== 0
+          ? JSON.stringify(data)
+          : undefined
 
     const requestOptions = {
       method,
