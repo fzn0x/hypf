@@ -2,7 +2,7 @@ import type { InitOptions } from './types/init.js'
 import type { HttpRequestFunctions } from './types/request.js'
 
 import { getAbortController } from './utils/get-abort-controller.js'
-import { httpMethodFunction } from './utils/create-http-method.js'
+import { createHTTPMethod } from './utils/create-http-method.js'
 
 function init(
   baseUrl: string = '',
@@ -17,12 +17,12 @@ function init(
   if (baseUrl) initOptions.baseUrl = baseUrl
 
   return {
-    get: (url, options, data) => httpMethodFunction(url, 'GET', options, data, initOptions),
-    post: (url, options, data) => httpMethodFunction(url, 'POST', options, data, initOptions),
-    put: (url, options, data) => httpMethodFunction(url, 'PUT', options, data, initOptions),
-    delete: (url, options, data) => httpMethodFunction(url, 'DELETE', options, data, initOptions),
-    patch: (url, options, data) => httpMethodFunction(url, 'PATCH', options, data, initOptions),
-    options: (url, options, data) => httpMethodFunction(url, 'OPTIONS', options, data, initOptions),
+    get: (url, options, data) => createHTTPMethod(url, 'GET', options, data, initOptions),
+    post: (url, options, data) => createHTTPMethod(url, 'POST', options, data, initOptions),
+    put: (url, options, data) => createHTTPMethod(url, 'PUT', options, data, initOptions),
+    delete: (url, options, data) => createHTTPMethod(url, 'DELETE', options, data, initOptions),
+    patch: (url, options, data) => createHTTPMethod(url, 'PATCH', options, data, initOptions),
+    options: (url, options, data) => createHTTPMethod(url, 'OPTIONS', options, data, initOptions),
     getAbortController,
   }
 }

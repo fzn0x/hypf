@@ -3,7 +3,7 @@ import type { InitOptions } from '../types/init.js'
 
 import { createRequest } from './create-request.js'
 
-export const httpMethodFunction = (
+export const createHTTPMethod = (
   url: string,
   method: RequestMethod = 'GET',
   options = {},

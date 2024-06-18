@@ -21,11 +21,6 @@ export type RequestFunction = (
   wrapper?: InitOptions
 ) => Promise<[Error | null, null]>
 
-export type HttpMethodFunction = (
-  url: string,
-  options: RequestOptions | undefined
-) => RequestFunction
-
 export interface HttpRequestFunctions {
   get<T = unknown>(
     url: string,
