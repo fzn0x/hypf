@@ -1,4 +1,4 @@
-import { InitOptions } from './types/init.js'
+import type { InitOptions } from './types/init.js'
 import type { HttpRequestFunctions } from './types/request.js'
 
 import { getAbortController } from './utils/get-abort-controller.js'
