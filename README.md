@@ -96,7 +96,7 @@ and Browsers:
 No need to write `try..catch` ! hypf do it like this:
 
 ```js
-const hypfRequest = hypf.init("https://jsonplaceholder.typicode.com";
+const hypfRequest = hypf.init("https://jsonplaceholder.typicode.com");
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await hypfRequest.post(
