@@ -18,7 +18,7 @@
 
 <hr />
 
-Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.
+Supertiny (4kB minified & 0 dependencies) and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers. 🚀
 
 The most flexible fetch wrapper that allows you to have more than one practice to get things done!
 
@@ -342,6 +342,14 @@ if (deleteErr) {
 }
 ```
 
+## Acknowledgements
+
+Hyperfetch is highly inspired by [Hono](https://github.com/honojs/hono), Got, Ky and Axios
+
 ## License
 
-Hyperfetch is [MIT-licensed](./LICENSE) and Open Source Software by [fzn0x](https://github.com/fzn0x)
+Hyperfetch is [MIT-licensed](./LICENSE) and Open Source Software by [fzn0x](https://github.com/fzn0x) and [contributors from Hono and the Hyperfetch community](https://github.com/fzn0x/hypf/graphs/contributors):
+
+<a href="https://github.com/fzn0x/hypf/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=fzn0x/hypf" />
+</a>
