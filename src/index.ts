@@ -4,6 +4,16 @@ import type { HttpRequestFunctions } from './types/request.js'
 import { getAbortController } from './utils/get-abort-controller.js'
 import { createHTTPMethod } from './utils/create-http-method.js'
 
+/**
+ * Initializes the HTTP request functions with a base URL and options.
+ *
+ * @param {string} [baseUrl=''] - The base URL for all requests.
+ * @param {InitOptions} [initOptions=Object.create(null)] - Initialization options.
+ *
+ * @returns {HttpRequestFunctions} An object containing HTTP request functions.
+ *
+ * @throws {Error} If `fetch` is not available in the environment.
+ */
 function init(
   baseUrl: string = '',
   initOptions: InitOptions = Object.create(null)
