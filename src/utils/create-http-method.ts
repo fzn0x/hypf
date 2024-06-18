@@ -1,4 +1,4 @@
-import type { RequestMethod } from '../types/request.js'
+import type { RequestMethod, RequestOptions } from '../types/request.js'
 import type { InitOptions } from '../types/init.js'
 
 import { createRequest } from './create-request.js'
@@ -17,9 +17,13 @@ import { createRequest } from './create-request.js'
 export const createHTTPMethod = (
   url: string,
   method: RequestMethod = 'GET',
-  options = Object.create(null),
+  options: RequestOptions = Object.create(null),
   data: { [key: string]: unknown } = Object.create(null),
   initOptions?: InitOptions
 ) => {
+  if (options.initOptions) {
+    initOptions = options.initOptions
+  }
+
   return createRequest(url, { method, ...options }, data, initOptions)
 }

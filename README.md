@@ -93,7 +93,7 @@ and Browsers:
 
 ## Error Handling
 
-No need to write `try..catch` ! hypf do it like this:
+You can handle errors like [Error handling on Golang](https://go.dev/blog/error-handling-and-go)
 
 ```ts
 const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com')
@@ -113,6 +113,33 @@ if (postErr) {
   console.error('POST Error:', postErr)
 } else {
   console.log('POST Data:', postData)
+}
+```
+
+or throw on error with `throwOnError` options sets `true`
+
+```ts
+const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com')
+
+// Example usage of POST method with retry and timeout
+try {
+  const response = await hypfRequest.post(
+    '/posts',
+    { retries: 3, timeout: 5000, initOptions: { throwOnError: true } },
+    {
+      title: 'foo',
+      body: 'bar',
+      userId: 1,
+    }
+  )
+
+  if (postErr) {
+    console.error('POST Error:', postErr)
+  } else {
+    console.log('POST Data:', postData)
+  }
+} catch (err) {
+  console.log(err)
 }
 ```
 
