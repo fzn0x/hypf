@@ -1,6 +1,6 @@
 {
   "name": "hypf",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Small and strong-typed HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers.",
   "main": "./dist/index.js",
   "repository": {
