@@ -31,7 +31,17 @@ import { defaultBackoff, defaultJitter } from './default-retries.js'
  */
 export const createRequest: RequestFunction = async (
   url = '',
-  options = {},
+  options = {
+    backoff: defaultBackoff,
+    jitter: false,
+    jitterFactor: DEFAULT_JITTER_FACTOR,
+    backoffFactor: DEFAULT_BACKOFF_FACTOR,
+    timeout: DEFAULT_MAX_TIMEOUT,
+    method: 'GET',
+    retries: 0,
+    retryOnTimeout: false,
+    headers: {},
+  },
   data,
   { baseUrl, hooks, debug, throwOnError }: InitOptions = Object.create(null)
 ) => {
@@ -48,13 +58,7 @@ export const createRequest: RequestFunction = async (
 
     const {
       method = 'GET',
-      retries = 0,
-      backoff = defaultBackoff,
-      jitter = false,
-      jitterFactor = DEFAULT_JITTER_FACTOR,
-      backoffFactor = DEFAULT_BACKOFF_FACTOR,
       timeout = DEFAULT_MAX_TIMEOUT,
-      retryOnTimeout = false,
       params,
       headers = {},
       signal,
@@ -195,10 +199,12 @@ export const createRequest: RequestFunction = async (
         const delay =
           options.jitter && options.jitterFactor
             ? defaultJitter(options.jitterFactor)
-            : options?.backoff?.(
-                options.retries,
-                options.backoffFactor ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR
-              )
+            : options.backoff
+              ? defaultBackoff(
+                  options.retries,
+                  options.backoffFactor ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR
+                )
+              : 0
         if (debug) {
           console.warn(
             `Request timed out. Retrying in ${delay}ms... (Remaining retries: ${options.retries})`
@@ -235,10 +241,12 @@ export const createRequest: RequestFunction = async (
         const delay =
           options.jitter && options.jitterFactor
             ? defaultJitter(options.jitterFactor)
-            : options?.backoff?.(
-                options.retries,
-                options.backoffFactor ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR
-              )
+            : options.backoff
+              ? defaultBackoff(
+                  options.retries,
+                  options.backoffFactor ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR
+                )
+              : 0
         if (debug) {
           console.warn(
             `Request failed. Retrying in ${delay}ms... (Remaining retries: ${options.retries})`
