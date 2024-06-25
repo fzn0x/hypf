@@ -36,7 +36,7 @@ The idea of this tool is to provide lightweight `fetch` wrapper for Node.js, Bun
 ```ts
 import hypf from 'hypf'
 
-const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com') // Pass true for DEBUG mode
+const hypfRequest = hypf.init('https://jsonplaceholder.typicode.com')
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await hypfRequest.post(
@@ -156,7 +156,7 @@ const hooks = {
   },
 }
 
-const requestWithHooks = hypf.init('https://jsonplaceholder.typicode.com', hooks, true) // pass true for DEBUG mode
+const requestWithHooks = hypf.init('https://jsonplaceholder.typicode.com', { hooks })
 
 // Example usage of POST method with retry and timeout
 const [postErr, postData] = await requestWithHooks.post(
@@ -335,6 +335,16 @@ if (deleteErr) {
   console.log('DELETE Data:', deleteData)
 }
 ```
+
+### debug
+
+Debugging the library is possible but limited. You can pass `true` to `debug` option:
+
+```ts
+const requestWithHooks = hypf.init('https://jsonplaceholder.typicode.com', { debug: true })
+```
+
+This is designed to be useful to track an issue. Submit a PR to debug more areas in the code!
 
 ## Acknowledgements
 

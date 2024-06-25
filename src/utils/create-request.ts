@@ -33,7 +33,7 @@ export const createRequest: RequestFunction = async (
   url = '',
   options = {},
   data,
-  { baseUrl, hooks, DEBUG, throwOnError }: InitOptions = Object.create(null)
+  { baseUrl, hooks, debug, throwOnError }: InitOptions = Object.create(null)
 ): Promise<[Error | null, null]> => {
   const {
     method = 'GET',
@@ -190,7 +190,7 @@ export const createRequest: RequestFunction = async (
           jitter && jitterFactor
             ? defaultJitter(jitterFactor)
             : backoff(retries, backoffFactor ? backoffFactor : DEFAULT_BACKOFF_FACTOR)
-        if (DEBUG) {
+        if (debug) {
           console.warn(
             `Request timed out. Retrying in ${delay}ms... (Remaining retries: ${retries})`
           )
@@ -223,7 +223,7 @@ export const createRequest: RequestFunction = async (
                 options.retries,
                 options.backoffFactor ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR
               )
-        if (DEBUG) {
+        if (debug) {
           console.warn(
             `Request failed. Retrying in ${delay}ms... (Remaining retries: ${options.retries})`
           )
