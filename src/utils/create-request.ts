@@ -35,26 +35,31 @@ export const createRequest: RequestFunction = async (
   data,
   { baseUrl, hooks, debug, throwOnError }: InitOptions = Object.create(null)
 ) => {
-  const {
-    method = 'GET',
-    retries = 0,
-    backoff = defaultBackoff,
-    jitter = false,
-    jitterFactor = DEFAULT_JITTER_FACTOR,
-    backoffFactor = DEFAULT_BACKOFF_FACTOR,
-    timeout = DEFAULT_MAX_TIMEOUT,
-    retryOnTimeout = false,
-    params,
-    headers = {},
-    signal,
-    ...otherOptions
-  } = options
-
   try {
     // Execute pre-request hook
     if (hooks?.preRequest) {
       hooks.preRequest(url, options)
     }
+
+    // Execute pre-timeout hook
+    if (hooks?.preTimeout) {
+      hooks.preTimeout(url, options)
+    }
+
+    const {
+      method = 'GET',
+      retries = 0,
+      backoff = defaultBackoff,
+      jitter = false,
+      jitterFactor = DEFAULT_JITTER_FACTOR,
+      backoffFactor = DEFAULT_BACKOFF_FACTOR,
+      timeout = DEFAULT_MAX_TIMEOUT,
+      retryOnTimeout = false,
+      params,
+      headers = {},
+      signal,
+      ...otherOptions
+    } = options
 
     const fullUrl = `${baseUrl}${url}`
 
@@ -77,11 +82,6 @@ export const createRequest: RequestFunction = async (
       }
     }
 
-    // Execute pre-timeout hook
-    if (hooks?.preTimeout) {
-      hooks.preTimeout(url, options)
-    }
-
     if (isAbortControllerSupported) {
       // Expose the AbortController instance
       global.abortController = new AbortController()
@@ -89,18 +89,6 @@ export const createRequest: RequestFunction = async (
       // Use the external AbortController instance
       global.abortSignal = signal ? signal : global.abortController.signal
     }
-
-    const timeoutId =
-      timeout && isAbortControllerSupported
-        ? setTimeout(() => {
-            global.abortController.abort()
-
-            // Execute post-timeout hook
-            if (hooks?.postTimeout) {
-              hooks.postTimeout(url, options)
-            }
-          }, timeout)
-        : undefined
 
     // Append params to the URL
     const urlWithParams = params ? appendParams(fullUrl, params) : fullUrl
@@ -147,6 +135,19 @@ export const createRequest: RequestFunction = async (
       requestOptions.headers.delete('Content-Type')
     }
 
+    // Start timeout before fetch
+    const timeoutId =
+      timeout && isAbortControllerSupported
+        ? setTimeout(() => {
+            global.abortController.abort()
+
+            // Execute post-timeout hook
+            if (hooks?.postTimeout) {
+              hooks.postTimeout(url, options)
+            }
+          }, timeout)
+        : undefined
+
     const responsePromise = fetch(urlWithParams, requestOptions)
 
     clearTimeout(timeoutId)
@@ -185,29 +186,44 @@ export const createRequest: RequestFunction = async (
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         console.error('Request aborted:', error)
-      } else if (retryOnTimeout && error.name === 'TimeoutError' && retries && retries > 0) {
+      } else if (
+        options.retryOnTimeout &&
+        error.name === 'TimeoutError' &&
+        options.retries &&
+        options.retries > 0
+      ) {
         const delay =
-          jitter && jitterFactor
-            ? defaultJitter(jitterFactor)
-            : backoff(retries, backoffFactor ? backoffFactor : DEFAULT_BACKOFF_FACTOR)
+          options.jitter && options.jitterFactor
+            ? defaultJitter(options.jitterFactor)
+            : options?.backoff?.(
+                options.retries,
+                options.backoffFactor ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR
+              )
         if (debug) {
           console.warn(
-            `Request timed out. Retrying in ${delay}ms... (Remaining retries: ${retries})`
+            `Request timed out. Retrying in ${delay}ms... (Remaining retries: ${options.retries})`
           )
         }
         // Execute pre-retry hook
         if (hooks?.preRetry) {
-          hooks.preRetry(url, options, retries, retries)
+          hooks.preRetry(url, options, options.retries, options.retries)
         }
         await new Promise((resolve) => setTimeout(resolve, delay))
         const [retryErr, retryData] = await createRequest(
           url,
-          { ...options, retries: retries - 1 },
+          { ...options, retries: options.retries - 1 },
           data
         )
         // Execute post-retry hook
         if (hooks?.postRetry) {
-          hooks.postRetry(url, options, data, [retryErr, retryData], retries, retries - 1)
+          hooks.postRetry(
+            url,
+            options,
+            data,
+            [retryErr, retryData],
+            options.retries,
+            options.retries - 1
+          )
         }
 
         if (throwOnError) {
@@ -219,7 +235,7 @@ export const createRequest: RequestFunction = async (
         const delay =
           options.jitter && options.jitterFactor
             ? defaultJitter(options.jitterFactor)
-            : backoff(
+            : options?.backoff?.(
                 options.retries,
                 options.backoffFactor ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR
               )
