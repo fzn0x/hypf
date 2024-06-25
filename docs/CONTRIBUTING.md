@@ -38,3 +38,23 @@ bun install
 bun run build
 bun run test
 ```
+
+## Acknowledgements
+
+You can ignore this error after `bun run build`:
+
+```json
+[
+  {
+    "resource": "/d:/Projects/hyperfetch/tsconfig.json",
+    "owner": "typescript",
+    "severity": 8,
+    "message": "Cannot write file 'd:/Projects/hyperfetch/dist/index.d.ts' because it would overwrite input file.",
+    "source": "ts",
+    "startLineNumber": 1,
+    "startColumn": 1,
+    "endLineNumber": 1,
+    "endColumn": 2
+  }
+]
+```
