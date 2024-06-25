@@ -17,48 +17,57 @@ export interface RequestOptions extends RequestInit {
   initOptions?: InitOptions
 }
 
-export type RequestFunction = (
-  url: string,
-  options?: RequestOptions,
-  data?: { [key: string]: unknown },
-  initOptions?: InitOptions
-) => Promise<[Error | null, null]>
+export type RequestFunction = {
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: true } },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions & { throwOnError: true }
+  ): Promise<Error | T>
+
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: false } },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions & { throwOnError: false }
+  ): Promise<[Error | null, T | null]>
+
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions?: { throwOnError?: boolean } },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions
+  ): Promise<[Error | null, T | null]>
+}
+
+export type HttpRequestFunction = {
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: true } },
+    data?: { [key: string]: unknown }
+  ): Promise<Error | T>
+
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: false } },
+    data?: { [key: string]: unknown }
+  ): Promise<[Error | null, T | null]>
+
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions?: { throwOnError?: boolean } },
+    data?: { [key: string]: unknown }
+  ): Promise<[Error | null, T | null]>
+}
 
 export interface HttpRequestFunctions {
-  get<T = unknown>(
-    url: string,
-    options?: RequestOptions,
-    data?: { [key: string]: unknown }
-  ): Promise<[Error | null, T | null]>
-  post<T = unknown>(
-    url: string,
-    options?: RequestOptions,
-    data?: { [key: string]: unknown }
-  ): Promise<[Error | null, T | null]>
-  put<T = unknown>(
-    url: string,
-    options?: RequestOptions,
-    data?: { [key: string]: unknown }
-  ): Promise<[Error | null, T | null]>
-  delete<T = unknown>(
-    url: string,
-    options?: RequestOptions,
-    data?: { [key: string]: unknown }
-  ): Promise<[Error | null, T | null]>
-  patch<T = unknown>(
-    url: string,
-    options?: RequestOptions,
-    data?: { [key: string]: unknown }
-  ): Promise<[Error | null, T | null]>
-  head<T = unknown>(
-    url: string,
-    options?: RequestOptions,
-    data?: { [key: string]: unknown }
-  ): Promise<[Error | null, T | null]>
-  options<T = unknown>(
-    url: string,
-    options?: RequestOptions,
-    data?: { [key: string]: unknown }
-  ): Promise<[Error | null, T | null]>
+  get: HttpRequestFunction
+  post: HttpRequestFunction
+  put: HttpRequestFunction
+  delete: HttpRequestFunction
+  patch: HttpRequestFunction
+  head: HttpRequestFunction
+  options: HttpRequestFunction
+
   getAbortController(): AbortController | null
 }

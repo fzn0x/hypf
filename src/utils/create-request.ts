@@ -34,7 +34,7 @@ export const createRequest: RequestFunction = async (
   options = {},
   data,
   { baseUrl, hooks, debug, throwOnError }: InitOptions = Object.create(null)
-): Promise<[Error | null, null]> => {
+) => {
   const {
     method = 'GET',
     retries = 0,
