@@ -25,5 +25,7 @@ export const createHTTPMethod = (
     initOptions = options.initOptions
   }
 
+  delete options.initOptions
+
   return createRequest(url, { method, ...options }, data, initOptions)
 }
