@@ -20,47 +20,64 @@ export interface RequestOptions extends RequestInit {
 }
 
 export type RequestFunction = {
-  <T>(
+  <T = Response>(
     url: string,
     options?: RequestOptions & { initOptions: { throwOnError: true } },
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError: true }
-  ): Promise<Error | T>
-
-  <T>(
+  ): Promise<Error & (T & Response)>
+  <T = Response>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: true } },
+    data?: { [key: string]: unknown }
+  ): Promise<Error & (T & Response)>
+  <T = Response>(
     url: string,
     options?: RequestOptions,
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError: true }
-  ): Promise<Error | T>
-
+  ): Promise<Error & (T & Response)>
   <T>(
     url: string,
     options?: RequestOptions & { initOptions: { throwOnError: false } },
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError: false }
-  ): Promise<[Error | null, T | null]>
+  ): Promise<[null, T] | [Error | null, unknown]>
+
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: false } },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions
+  ): Promise<[null, T] | [Error | null, unknown]>
 
   <T>(
     url: string,
     options?: RequestOptions,
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError: false }
-  ): Promise<[Error | null, T | null]>
+  ): Promise<[null, T] | [Error | null, unknown]>
 
   <T>(
     url: string,
     options?: RequestOptions & { initOptions?: { throwOnError?: boolean } },
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError?: boolean }
-  ): Promise<[Error | null, T | null]>
+  ): Promise<[null, T] | [Error | null, unknown]>
+
+  <T>(
+    url: string,
+    options?: RequestOptions & { initOptions?: { throwOnError?: boolean } },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions
+  ): Promise<[null, T] | [Error | null, unknown]>
 
   <T>(
     url: string,
     options?: RequestOptions,
     data?: { [key: string]: unknown } | unknown,
     initOptions?: InitOptions & { throwOnError?: boolean }
-  ): Promise<[Error | null, T | null]>
+  ): Promise<[null, T] | [Error | null, unknown]>
 }
 
 export type HttpRequestFunction = {

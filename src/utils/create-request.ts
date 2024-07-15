@@ -175,7 +175,21 @@ export const createRequest: RequestFunction = async (
     }
 
     if (throwOnError) {
-      return responseData
+      const wrappedResponse = new Response(
+        contentType && contentType.includes('application/json')
+          ? JSON.stringify(responseData)
+          : responseData,
+        {
+          headers: {
+            'Content-Type': contentType || 'text/plain',
+          },
+          status: response.status,
+          statusText: response.statusText,
+        }
+      )
+
+      // TODO: fix TS bug, wrapped response is part of throwOnError: true but types converted to throwOnError: false
+      return wrappedResponse as unknown as [null, Response]
     }
 
     return [null, responseData]
