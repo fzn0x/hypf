@@ -2,8 +2,6 @@
     <img width="55%" src="./assets/hyperfetch.png">
 </p>
 
-> :warning: Hypf still in early-stage, so any sudden breaking changes is expected
-
 <hr />
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/fzn0x/hypf/ci.yml?branch=main)](https://github.com/fzn0x/hypf/actions)
@@ -21,6 +19,22 @@
 Small (6.3kB minified & 0 dependencies) and type-powered HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers. 🚀
 
 The most flexible fetch wrapper that allows you to have more than one practice to get things done!
+
+## Table of Contents
+
+- [Get Started](#get-started)
+- [Error Handling](#error-handling)
+- [Response Cloning](#response-cloning)
+- [Request Cloning](#request-cloning)
+- [Hooks](#hooks)
+- [Retry Mechanism](#retry-mechanism)
+- [Infer Response Types](#infer-response-types)
+  - [URLSearchParams](#urlsearchparams)
+  - [Form Data](#form-data)
+  - [AbortController](#abortcontroller)
+  - [Debug](#debug)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
 
 ## Get Started
 
@@ -145,25 +159,21 @@ try {
 You need to use `throwOnError: true` to enable Response clone feature.
 
 ```ts
-try {
-  const res = await createRequest(
-    'https://jsonplaceholder.typicode.com/todos/1',
-    {},
-    {},
-    {
-      throwOnError: true,
-    }
-  )
+const res = await createRequest(
+  'https://jsonplaceholder.typicode.com/todos/1',
+  {},
+  {},
+  {
+    throwOnError: true,
+  }
+)
 
-  const response2 = res.clone()
+const response2 = res.clone()
 
-  expect(res).to.be.an.instanceOf(Response)
-  expect(response2).to.be.an.instanceOf(Response)
-  expect(await res.json()).to.be.an.instanceOf(Object)
-  expect(await response2.json()).to.be.an.instanceOf(Object)
-} catch (err) {
-  console.log(err)
-}
+expect(res).to.be.an.instanceOf(Response)
+expect(response2).to.be.an.instanceOf(Response)
+expect(await res.json()).to.be.an.instanceOf(Object)
+expect(await response2.json()).to.be.an.instanceOf(Object)
 ```
 
 ## Request Cloning
@@ -171,23 +181,21 @@ try {
 You need to use `throwOnError: true` and `dryRun: true` to enable Request clone feature.
 
 ```ts
-try {
-  const req = await createRequest(
-    'https://jsonplaceholder.typicode.com/todos/1',
-    {},
-    {},
-    {
-      throwOnError: true,
-    }
-  )
+const req = await createRequest(
+  'https://jsonplaceholder.typicode.com/todos/1',
+  {
+    dryRun: true,
+  },
+  {},
+  {
+    throwOnError: true,
+  }
+)
 
-  const req2 = req.clone()
+const req2 = req.clone()
 
-  expect(req).to.be.an.instanceOf(Request)
-  expect(req2).to.be.an.instanceOf(Request)
-} catch (err) {
-  console.log(err)
-}
+expect(req).to.be.an.instanceOf(Request)
+expect(req2).to.be.an.instanceOf(Request)
 ```
 
 ## Hooks
