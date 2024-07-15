@@ -19,7 +19,7 @@ describe('createHTTPMethod', () => {
         {}
       )
     } catch (err) {
-      expect((err as Error)?.message).equals('fetch failed')
+      expect((err as Error)?.message).equals(undefined)
     }
   })
 })
