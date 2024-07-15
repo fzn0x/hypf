@@ -140,6 +140,32 @@ try {
 }
 ```
 
+## Response Cloning
+
+You need to use `throwOnError: true` to enable Response clone feature.
+
+```ts
+try {
+  const res = await createRequest(
+    'https://jsonplaceholder.typicode.com/todos/1',
+    {},
+    {},
+    {
+      throwOnError: true,
+    }
+  )
+
+  const response2 = res.clone()
+
+  expect(res).to.be.an.instanceOf(Response)
+  expect(response2).to.be.an.instanceOf(Response)
+  expect(await res.json()).to.be.an.instanceOf(Object)
+  expect(await response2.json()).to.be.an.instanceOf(Object)
+} catch (err) {
+  console.log(err)
+}
+```
+
 ## Hooks
 
 Hooks is supported and expected to not modifying the original result by design.
