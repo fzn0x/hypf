@@ -29,10 +29,10 @@ The most flexible fetch wrapper that allows you to have more than one practice t
 - [Hooks](#hooks)
 - [Retry Mechanism](#retry-mechanism)
 - [Infer Response Types](#infer-response-types)
-  - [URLSearchParams](#urlsearchparams)
-  - [Form Data](#form-data)
-  - [AbortController](#abortcontroller)
-  - [Debug](#debug)
+- [URLSearchParams](#urlsearchparams)
+- [Form Data](#form-data)
+- [AbortController](#abortcontroller)
+- [Debug](#debug)
 - [Acknowledgements](#acknowledgements)
 - [License](#license)
 
@@ -343,7 +343,7 @@ const [getErr, getData] = await hypfRequest.get<
 getData?.[0]?.id // number | undefined
 ```
 
-### URLSearchParams
+## URLSearchParams
 
 ```ts
 const [getErr, getData] = await hypfRequest.get('/posts', {
@@ -355,7 +355,7 @@ const [getErr, getData] = await hypfRequest.get('/posts', {
 }) // /posts?id=1
 ```
 
-### Form Data
+## Form Data
 
 Example usecase for Upload File:
 
@@ -373,7 +373,7 @@ export async function postImportFile(formData: FormData) {
 }
 ```
 
-### AbortController
+## AbortController
 
 We expose abort controller, you can cancel next request anytime.
 
@@ -396,7 +396,7 @@ if (deleteErr) {
 }
 ```
 
-### debug
+## Debugging
 
 Debugging the library is possible but limited. You can pass `true` to `debug` option:
 
