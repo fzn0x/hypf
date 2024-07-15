@@ -166,7 +166,7 @@ export const createRequest: RequestFunction = async (
         : await response.text()
 
     if (!response.ok) {
-      throw createHTTPError(response, responseData)
+      throw createHTTPError(response)
     }
 
     // Execute post-request hook

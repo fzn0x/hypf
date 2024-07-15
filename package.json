@@ -43,7 +43,8 @@
     "build": "rimraf dist && tsx ./build.ts && bun run copy:package.cjs.json && webpack",
     "watch": "rimraf dist && tsx ./build.ts --watch && bun run copy:package.cjs.json",
     "postbuild": "publint",
-    "release": "np"
+    "release": "np",
+    "test:build": "bun run build && bun run test"
   },
   "keywords": [
     "fetch",
