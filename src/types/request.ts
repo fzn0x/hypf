@@ -29,7 +29,21 @@ export type RequestFunction = {
 
   <T>(
     url: string,
+    options?: RequestOptions,
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions & { throwOnError: true }
+  ): Promise<Error | T>
+
+  <T>(
+    url: string,
     options?: RequestOptions & { initOptions: { throwOnError: false } },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions & { throwOnError: false }
+  ): Promise<[Error | null, T | null]>
+
+  <T>(
+    url: string,
+    options?: RequestOptions,
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError: false }
   ): Promise<[Error | null, T | null]>
@@ -38,7 +52,14 @@ export type RequestFunction = {
     url: string,
     options?: RequestOptions & { initOptions?: { throwOnError?: boolean } },
     data?: { [key: string]: unknown },
-    initOptions?: InitOptions
+    initOptions?: InitOptions & { throwOnError?: boolean }
+  ): Promise<[Error | null, T | null]>
+
+  <T>(
+    url: string,
+    options?: RequestOptions,
+    data?: { [key: string]: unknown } | unknown,
+    initOptions?: InitOptions & { throwOnError?: boolean }
   ): Promise<[Error | null, T | null]>
 }
 

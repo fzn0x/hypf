@@ -16,6 +16,24 @@ describe('createRequest', () => {
     }
   })
 
+  it('Supports response clone', async () => {
+    try {
+      const res = await createRequest(
+        'https://jsonplaceholder.typicode.com/todos/1',
+        { initOptions: { throwOnError: true } },
+        {},
+        {
+          throwOnError: true,
+        }
+      )
+
+      console.log(res)
+      expect(res).to.be.an.instanceOf(Response)
+    } catch (err) {
+      console.log(err)
+    }
+  })
+
   it('Bun supports proxy', async () => {
     try {
       await createRequest(

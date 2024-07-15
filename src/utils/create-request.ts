@@ -65,7 +65,7 @@ export const createRequest: RequestFunction = async (
       ...otherOptions
     } = options
 
-    const fullUrl = `${baseUrl}${url}`
+    const fullUrl = `${baseUrl || ''}${url}`
 
     const reqHeaders = new Headers(headers)
 
