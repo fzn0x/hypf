@@ -166,6 +166,30 @@ try {
 }
 ```
 
+## Request Cloning
+
+You need to use `throwOnError: true` and `dryRun: true` to enable Request clone feature.
+
+```ts
+try {
+  const req = await createRequest(
+    'https://jsonplaceholder.typicode.com/todos/1',
+    {},
+    {},
+    {
+      throwOnError: true,
+    }
+  )
+
+  const req2 = req.clone()
+
+  expect(req).to.be.an.instanceOf(Request)
+  expect(req2).to.be.an.instanceOf(Request)
+} catch (err) {
+  console.log(err)
+}
+```
+
 ## Hooks
 
 Hooks is supported and expected to not modifying the original result by design.

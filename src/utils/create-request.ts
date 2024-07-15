@@ -40,6 +40,7 @@ export const createRequest: RequestFunction = async (
     method: 'GET',
     retries: 0,
     retryOnTimeout: false,
+    dryRun: false,
     headers: {},
   },
   data,
@@ -62,6 +63,7 @@ export const createRequest: RequestFunction = async (
       params,
       headers = {},
       signal,
+      dryRun,
       ...otherOptions
     } = options
 
@@ -152,7 +154,13 @@ export const createRequest: RequestFunction = async (
           }, timeout)
         : undefined
 
-    const responsePromise = fetch(urlWithParams, requestOptions)
+    const request = new Request(urlWithParams, requestOptions)
+
+    if (throwOnError && dryRun) {
+      return request as unknown as [null, Request]
+    }
+
+    const responsePromise = fetch(request)
 
     clearTimeout(timeoutId)
 
@@ -166,7 +174,7 @@ export const createRequest: RequestFunction = async (
         : await response.text()
 
     if (!response.ok) {
-      throw createHTTPError(response)
+      throw createHTTPError(response, request)
     }
 
     // Execute post-request hook
