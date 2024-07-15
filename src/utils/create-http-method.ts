@@ -20,7 +20,7 @@ export const createHTTPMethod = (
   options: RequestOptions = Object.create(null),
   data: { [key: string]: unknown } = Object.create(null),
   initOptions?: InitOptions
-) => {
+): Promise<[Error | null, unknown]> => {
   if (options.initOptions) {
     initOptions = options.initOptions
   }
