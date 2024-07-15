@@ -1,4 +1,6 @@
 import type { InitOptions } from './init.js'
+import type { createHTTPMethod } from '../utils/create-http-method.js'
+import type { createHTTPError } from '../utils/create-http-error.js'
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
@@ -69,5 +71,7 @@ export interface HttpRequestFunctions {
   head: HttpRequestFunction
   options: HttpRequestFunction
 
+  createHTTPMethod: typeof createHTTPMethod
+  createHTTPError: typeof createHTTPError
   getAbortController(): AbortController | null
 }

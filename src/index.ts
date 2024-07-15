@@ -3,6 +3,7 @@ import type { HttpRequestFunctions } from './types/request.js'
 
 import { getAbortController } from './utils/get-abort-controller.js'
 import { createHTTPMethod } from './utils/create-http-method.js'
+import { createHTTPError } from './utils/create-http-error.js'
 
 /**
  * Initializes the HTTP request functions with a base URL and options.
@@ -36,6 +37,9 @@ export function init(
     patch: (url, options, data) => createHTTPMethod(url, 'PATCH', options, data, initOptions),
     head: (url, options, data) => createHTTPMethod(url, 'HEAD', options, data, initOptions),
     options: (url, options, data) => createHTTPMethod(url, 'OPTIONS', options, data, initOptions),
+
+    createHTTPMethod,
+    createHTTPError,
     getAbortController,
   }
 }
