@@ -15,7 +15,7 @@ interface HTTPError extends Error {
  * @param {Request} request - The Request object used to make the fetch request.
  * @param {string} code - The error code to use for the error object.
  *
- * @returns {Error} An Error object with additional properties for response and data.
+ * @returns {Error} An Error object with additional properties for response, request, and code.
  */
 export function createHTTPError(response: Response, request?: Request, code?: string): Error {
   try {
