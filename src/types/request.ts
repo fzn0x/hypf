@@ -13,6 +13,7 @@ export interface RequestOptions extends RequestInit {
   backoffFactor?: number // Custom backoff factor (default: 0.3)
   timeout?: number // Timeout in milliseconds
   retryOnTimeout?: boolean // New option to retry on timeout errors
+  dryRun?: boolean // New option to skip actual request
   params?: Record<string, string | number> // URLSearchParams option
   proxy?: string
   unix?: string
@@ -20,6 +21,23 @@ export interface RequestOptions extends RequestInit {
 }
 
 export type RequestFunction = {
+  <T = Request>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: true }; dryRun: true },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions & { throwOnError: true }
+  ): Promise<Error & (T & Request)>
+  <T = Request>(
+    url: string,
+    options?: RequestOptions & { initOptions: { throwOnError: true }; dryRun: true },
+    data?: { [key: string]: unknown }
+  ): Promise<Error & (T & Request)>
+  <T = Request>(
+    url: string,
+    options?: RequestOptions & { dryRun: true },
+    data?: { [key: string]: unknown },
+    initOptions?: InitOptions
+  ): Promise<Error & (T & Request)>
   <T = Response>(
     url: string,
     options?: RequestOptions & { initOptions: { throwOnError: true } },
@@ -43,35 +61,30 @@ export type RequestFunction = {
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError: false }
   ): Promise<[null, T] | [Error | null, unknown]>
-
   <T>(
     url: string,
     options?: RequestOptions & { initOptions: { throwOnError: false } },
     data?: { [key: string]: unknown },
     initOptions?: InitOptions
   ): Promise<[null, T] | [Error | null, unknown]>
-
   <T>(
     url: string,
     options?: RequestOptions,
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError: false }
   ): Promise<[null, T] | [Error | null, unknown]>
-
   <T>(
     url: string,
     options?: RequestOptions & { initOptions?: { throwOnError?: boolean } },
     data?: { [key: string]: unknown },
     initOptions?: InitOptions & { throwOnError?: boolean }
   ): Promise<[null, T] | [Error | null, unknown]>
-
   <T>(
     url: string,
     options?: RequestOptions & { initOptions?: { throwOnError?: boolean } },
     data?: { [key: string]: unknown },
     initOptions?: InitOptions
   ): Promise<[null, T] | [Error | null, unknown]>
-
   <T>(
     url: string,
     options?: RequestOptions,

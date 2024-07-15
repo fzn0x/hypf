@@ -17,25 +17,39 @@ describe('createRequest', () => {
   })
 
   it('Supports response clone', async () => {
-    try {
-      const res = await createRequest(
-        'https://jsonplaceholder.typicode.com/todos/1',
-        {},
-        {},
-        {
-          throwOnError: true,
-        }
-      )
+    const res = await createRequest(
+      'https://jsonplaceholder.typicode.com/todos/1',
+      {},
+      {},
+      {
+        throwOnError: true,
+      }
+    )
 
-      const response2 = res.clone()
+    const response2 = res.clone()
 
-      expect(res).to.be.an.instanceOf(Response)
-      expect(response2).to.be.an.instanceOf(Response)
-      expect(await res.json()).to.be.an.instanceOf(Object)
-      expect(await response2.json()).to.be.an.instanceOf(Object)
-    } catch (err) {
-      console.log(err)
-    }
+    expect(res).to.be.an.instanceOf(Response)
+    expect(response2).to.be.an.instanceOf(Response)
+    expect(await res.json()).to.be.an.instanceOf(Object)
+    expect(await response2.json()).to.be.an.instanceOf(Object)
+  })
+
+  it('Supports request clone', async () => {
+    const req = await createRequest(
+      'https://jsonplaceholder.typicode.com/todos/1',
+      {
+        dryRun: true,
+      },
+      {},
+      {
+        throwOnError: true,
+      }
+    )
+
+    const req2 = req.clone()
+
+    expect(req).to.be.an.instanceOf(Request)
+    expect(req2).to.be.an.instanceOf(Request)
   })
 
   it('Bun supports proxy', async () => {

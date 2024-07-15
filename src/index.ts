@@ -20,8 +20,11 @@ export function init(
   initOptions: InitOptions = Object.create(null)
 ): HttpRequestFunctions {
   // Check if fetch is available
+  // TODO: or use hypf fetch polyfill
   if (typeof fetch === 'undefined') {
-    throw new Error('This library is intended for use in the browser environment only.')
+    throw new Error(
+      'This library is intended for use in the native `fetch()` supported environment only.'
+    )
   }
 
   // Override initOptions baseUrl if baseUrl exists
