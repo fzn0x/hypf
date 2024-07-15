@@ -26,6 +26,7 @@ The most flexible fetch wrapper that allows you to have more than one practice t
 - [Error Handling](#error-handling)
 - [Response Cloning](#response-cloning)
 - [Request Cloning](#request-cloning)
+- [Dry Run](#dry-run)
 - [Hooks](#hooks)
 - [Retry Mechanism](#retry-mechanism)
 - [Infer Response Types](#infer-response-types)
@@ -159,7 +160,7 @@ try {
 You need to use `throwOnError: true` to enable Response clone feature.
 
 ```ts
-const res = await createRequest(
+const res = await hypfRequest.get(
   'https://jsonplaceholder.typicode.com/todos/1',
   {},
   {},
@@ -176,12 +177,14 @@ expect(await res.json()).to.be.an.instanceOf(Object)
 expect(await response2.json()).to.be.an.instanceOf(Object)
 ```
 
-## Request Cloning
+## Request Cloning & Dry Run
 
-You need to use `throwOnError: true` and `dryRun: true` to enable Request clone feature.
+Dry Run is supported in hypf, you can calling hypf requests without executing it!
+
+This enables more features in the future and also Request cloning:
 
 ```ts
-const req = await createRequest(
+const req = await hypfRequest.get(
   'https://jsonplaceholder.typicode.com/todos/1',
   {
     dryRun: true,
