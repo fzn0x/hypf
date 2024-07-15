@@ -16,7 +16,7 @@
 
 <hr />
 
-Small (6.3kB minified & 0 dependencies) and type-powered HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers. 🚀
+Small (7.2kB minified & 0 dependencies) and type-powered HTTP client for Deno, Bun, Node.js, Cloudflare Workers and Browsers. 🚀
 
 The most flexible fetch wrapper that allows you to have more than one practice to get things done!
 
