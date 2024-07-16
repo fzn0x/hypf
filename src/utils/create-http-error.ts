@@ -6,8 +6,6 @@ interface HTTPError extends Error {
   originalError?: unknown
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /**
  * Creates an HTTP error object based on the response and response data.
  *
