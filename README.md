@@ -168,12 +168,9 @@ const res = await hypfRequest.get(
   }
 )
 
-const response2 = res.clone()
+const res2 = res.clone()
 
-expect(res).to.be.an.instanceOf(Response)
-expect(response2).to.be.an.instanceOf(Response)
-expect(await res.json()).to.be.an.instanceOf(Object)
-expect(await response2.json()).to.be.an.instanceOf(Object)
+console.log(res2)
 ```
 
 ## Request Cloning & Dry Run
@@ -196,8 +193,7 @@ const req = await hypfRequest.get(
 
 const req2 = req.clone()
 
-expect(req).to.be.an.instanceOf(Request)
-expect(req2).to.be.an.instanceOf(Request)
+console.log(req2)
 ```
 
 ## Hooks
